@@ -1,0 +1,203 @@
+{
+  "n1": {
+    "titol": "Sisena",
+    "explicacio": "Referència al pagament en cereal recollit en les concòrdies de 1437. Procedeix de la concòrdia del rector Arnaldus Sala.",
+    "doc_ref": "Concòrdia 1437, APSMP (fol. 87v)",
+    "data_doc": "11 de març de 1437",
+    "text_transcrit": "vint-i-vuit masos... lliuraven entre una i dues sisenes de blat.",
+    "color": "rgba(102, 187, 106, 0.4)",
+    "id_font": "doc_concordia_1437"
+  },
+  "n2": {
+    "titol": "Delme",
+    "explicacio": "Dret eclesiàstic universal de percepció tributària sobre els fruits de la terra (pergamí 1561).",
+    "doc_ref": "Butlla de Roma, 1561",
+    "data_doc": "26 gener 1561",
+    "text_transcrit": "sumada al delme i la primícia... l'edifici havia de disposar d'estructures de reserva.",
+    "color": "rgba(239, 83, 80, 0.4)",
+    "id_font": "doc_butlla_1561"
+  },
+  "n3": {
+    "titol": "La Botiga",
+    "explicacio": "Espai logístic pavimentat per Joan Massart per evitar humitats en el gra. El paviment es realitza amb rajoles de ceràmica roja.",
+    "doc_ref": "Castellar II – 132",
+    "oficial": "Joan Massart (arrendatari)",
+    "data_doc": "12 d'abril de 1586",
+    "text_transcrit": "enpaimentar la botiga per cost y port.",
+    "color": "rgba(66, 165, 245, 0.4)",
+    "id_font": "doc_132"
+  },
+  "n4": {
+    "titol": "125 Rajoles",
+    "explicacio": "Comanda exacta de rajoles per al paviment de la botiga i la canonada d'aigua.",
+    "doc_ref": "Castellar II – 132",
+    "oficial": "Joan Massart",
+    "data_doc": "1586",
+    "text_transcrit": "sent y vint y sinch ragoles per la canonada y enpaimentar la botiga.",
+    "color": "rgba(255, 167, 38, 0.4)",
+    "id_font": "doc_132"
+  },
+  "n5": {
+    "titol": "Golfos (Ferratges)",
+    "explicacio": "Perns de ferro per a la porta forana de la Rectoria, encarregats per seguretat.",
+    "doc_ref": "Castellar II – 122, fol. 2",
+    "data_doc": "24 de setembre de 1560-70",
+    "text_transcrit": "tres golfos per una porta.",
+    "color": "rgba(171, 71, 188, 0.4)",
+    "id_font": "doc_122_fol_2"
+  },
+  "n6": {
+    "titol": "Cup (Reparació)",
+    "explicacio": "Intervenció estructural dels mestres boters per garantir l'estanquitat del vi.",
+    "doc_ref": "Castellar II – 147",
+    "oficial": "Joan la Guarda i Joan Endral",
+    "data_doc": "30 d'octubre de 1628",
+    "text_transcrit": "nos paga per feyna auem feta en lo seller... per simentar lo cup ab tot lo manester.",
+    "color": "rgba(126, 87, 194, 0.4)",
+    "id_font": "doc_147"
+  },
+  "n7": {
+    "titol": "Simentar el Cup",
+    "explicacio": "Procés de morterat de calç a la paret interior del cup de 1.700 litres per evitar filtracions.",
+    "doc_ref": "Castellar II – 147",
+    "data_doc": "1628",
+    "text_transcrit": "simentar lo cup ab tot lo manester.",
+    "color": "rgba(38, 166, 154, 0.4)",
+    "id_font": "doc_147"
+  },
+  "n8": {
+    "titol": "Religar cèrcols",
+    "explicacio": "Ajustament de la ferramenta de les botes grossas de vi per part dels boters.",
+    "doc_ref": "Castellar II – 147",
+    "data_doc": "1628",
+    "text_transcrit": "religar tots los cèrcols de la dita bota de cadireta.",
+    "color": "rgba(212, 190, 44, 0.4)",
+    "id_font": "doc_147"
+  },
+  "n9": {
+    "titol": "Bota de Cadireta",
+    "explicacio": "Recipient vinícola d'alta capacitat construït nou a la Rectoria segons consta en els albarans.",
+    "doc_ref": "Castellar II – 147",
+    "data_doc": "1628",
+    "text_transcrit": "fer lo cap de la bota de cadireta de 8 càrregas tot nou.",
+    "color": "rgba(236, 64, 122, 0.4)",
+    "id_font": "doc_147"
+  },
+  "n10": {
+    "titol": "Cisterna (4 canes)",
+    "explicacio": "Obra hidràulica de Narcís Carner per garantir el proveïment d'aigua a 8,6 metres.",
+    "doc_ref": "Castellar II – 122",
+    "data_doc": "1560-1570",
+    "text_transcrit": "4 canes de profunditat de la cisterna.",
+    "color": "rgba(92, 107, 192, 0.4)",
+    "id_font": "doc_122"
+  },
+  "n11": {
+    "titol": "La Tortugada",
+    "explicacio": "Sistema de canalització de teules (tortugues) construït per encaminar la pluja.",
+    "doc_ref": "Castellar II – 127",
+    "oficial": "Joan Casals (Mestre de Cases)",
+    "data_doc": "1606",
+    "text_transcrit": "per fer la tortugada de la cisterna.",
+    "color": "rgba(120, 144, 156, 0.4)",
+    "id_font": "doc_127"
+  },
+  "n14": {
+    "titol": "Pedrissos i Finestres",
+    "explicacio": "Dignificació de la sala noble amb bancs d'obra a les finestres del vicari.",
+    "doc_ref": "Castellar II – 142",
+    "data_doc": "1632",
+    "text_transcrit": "reparació de pedrissos y finestres del vicari.",
+    "color": "rgba(114, 131, 150, 0.4)",
+    "id_font": "doc_142"
+  },
+  "n15": {
+    "titol": "L'Oró (Canya trenada)",
+    "explicacio": "Ubicació de recipients cilíndrics per guardar el gra a les cambres superiors.",
+    "doc_ref": "Castellar II – 131",
+    "data_doc": "1667",
+    "text_transcrit": "cambra dels orons per el gra de la comunitat.",
+    "color": "rgba(255, 112, 67, 0.4)",
+    "id_font": "doc_131"
+  },
+  "fonts": {
+    "doc_concordia_1437": {
+      "titol": "Concòrdia 1437, APSMP (fol. 87v) - Transcripció Original",
+      "text_complet": "Aquest és l'espai preparat per encabir el text original i sencer del document Concòrdia 1437, APSMP (fol. 87v).\n\nS'hi pot abocar directament tot el foli transcrit o fotografies."
+    },
+    "doc_butlla_1561": {
+      "titol": "Butlla de Roma, 1561 - Transcripció Original",
+      "text_complet": "INVENTARI DE 1562\n\nSanta Maria del Pi / Castellar III, exp. 221, fol, 24r i ss.\n26/01/1562\n\n24r Inuentarium honorum mobilium et scripturarum repertarum in domo rectoriae ecclesiae parrochialis Sancti Stefani de Castellar.\n\n\nInuentarium siue repertorium factum de bonis mobilibus et scripturis repertis in domo rectoriae nuncupata parrochialis ecclesia Sancti Stephani de Castellario [...]\n\n\nEn la casa anomenada la rectoria de la parrochial sglesia de St. Steue de Castellar, del bisbat de Barcelona, troba(n?) lo següent:\n\nPrimo, en la entrada de dita casa dues bigues llarg[u]es de pi.\nEn una botiga que és en dita entrada, una pila de calc en la qual m'? pot haver poch més o manco xx quorteres.\nItem, en la stabla, dos coi[xi?]ns grans de tenir palla.\n\nEn lo saller vell, una bota de cadireta de tinguda de sis càrregues.\nItem un cup de fusta gran de tingut de xv càrregues.\nItem un banch de cup gran.\n\nEn lo celler nou de dita casa:\nPrimo, dues botes de dues càrregues.\nItem, quatre botes de una càrrega.\nItem, una de mija càrrega.\n24v Item, tres gerres grans de tenir oli y un cànter de tenir oliues. \n\nEn lo menjador de dita casa:\nPrimo, una taula de pi vella ab dos capitells.\nItem, un banch.\nItem, una altre taula de pi sens petges.\n\nEn la cambra que trau finestra al pati:\nPrimo, orons de canya nous, la hu de tinguda de xx quarteres, l'altre de xviii.\nItem, una gerra.\nItem, una destral.\n\nEn la cambra que trau finestra al sementiri:\nPrimo, orons de canya de tinguda la hu de xxx quarteres, l'altre de xvii.\nMés una scala de fusta.\n\nEn l'altra cambra hont dorm lo vicarij que trau finestra deuant lo camp:\nPrimo, dues caxes de pi velles ab pany y clau.\nItem una tauleta dolenta.\nItem trobam les scriptures següents:\nPrimo un formulari de actes vells.\nItem un man[u]al de actes presos en dita rectoria de Castellar, lo qual comensa a dos juliol MDXXII un acte de debitori que comensa: “Sia notori y manifest a tosts com jo Francesch de Clascarí, Senyor del terme de Castellar”, y acaba en un acte fet a VI de abril MDXXXIII de unes treuas, comensa: “Fermem bones y leals treues”.\nItem un llibre a forma de quart de testaments y capítols matrimonials comensa a XII de juliol MDXXII un testament de Francesch de Clascarí y acaba a XXVII de febrer MDXXX un acte que comensa Bertomeu Gili alias Mur.\nItem un altre manual de dita forma que comensa diluns primer dia de juliol del any MDIIII feu relatió y acaba “A XXVI de novembre MDVII acusam(?)”.\n25v Item altre manual de dita forma comensa “Inuentari prestat en lo mas Oliuar” y acaba “Dijous a XXX de agost MCCCCLXXXXII. Jo Pan(?) Aleu”.\nItem un altre manual de dita forma que comensa a la cara “Incipi(?) manuale siue libellum etc.” y en la següent fulla “Bant accusat dimecres. Compta XV del mes de abril MDXXXIIII”, y la darrera fulla acaba “...anno domini Millesimo Quingentesimo quatringentesimo ex(?) die quarta mensis martiy (?).\nItem altre manual de dita  forma en lo qual y falten cartes al principi, comensa la primera fulla “Sancti Juliani de Altura” y la derrera acaba “Die martis prima mensis marcy anno domini MDCCCCLXXVII sit omnibus notum”.\nItem altre manual a tot full que comensa\n[falta transcriure la resta de documents trobats]"
+    },
+    "doc_132": {
+      "titol": "Castellar II – 132 - Transcripció Original",
+      "text_complet": "Castellar II – 132\n\n//1//\n\nCompte del que m’és degut a mi Joan\nMassart ·p·? p? la reverent comunitat\ndel Pi de Barcelona fet dit compte\na xij de abril 1586 y és per les obres\nse són fetes en Castellar.\n\n\nPrimo deu vint y dos sous sis dinés per lo usa?\ny port y posar un serrod? al cup\n\nI ll. ii s. vi\nMés per religar y fer una cadireta\na la bota grosa per tot dotse sous\nll. xii s.\nMés me deu deu sous per dos anyades\nde v s. per any reben del aniuer-\nsari d’en Comet?\nll. x s.\nMés per dos claus e fetes fer ? per la\ncambra de dalt coltra? per lo sellaret\nquatre sous y sis dinés, dich\nll. iiij s. vi\n\nPer la canonada.\n\nPrimo per port dels canons de Barcelona a Castellar\ndotse sous que foren tres càr[r]egues\nll. xij s.\nMés per deu corteres de cals cost y\nPort trenta sous\nI ll. x s.\nPer fer la pila a rahó set dinés com?\nval dotse sous deu dinés\nll. xij s. x\nMés dos hòmens un dia per fer la pila\ny amarar que aportauen la aygua\nde la font deu sous\nll. x s.\nMés al mestre de cases que vingueren\ndos estigueren quatre dies y mix\ny un jornal del mestre con vingué\na descobrir la canonada\nIi ll. x s.\n\nPer fer la lata? per la\ncanonada\n\nPrimo mix corter de oli? dotsa sous\nll. xij s.\nMés per iiij liures de stopa de li y iij\nliures de stopa de cànem per tot\nll. xij s. vj\nNoy compte que y vaix enujar a Sabadell\nMés doní la un fadrí dos sous per a que n’\nanés a fer un cabàs de cals viua per\nfer la lata\nll. ij s.\n\nViiij ll. x s. iiij\nMés trencaren un parpal obrint la\nparet y fer adobar un magall en\nSellent ne auia prestat y un librell\noran? que trancaren fent la lata per los ca-\nnons per tot sinch sous y mix\nll. v s. vi\nMés per mix quintar de guix\nI s. vj\nMés per sent y vint y sinch ragoles\nper la canonada y enpaimentar? la\nbotiga  per cost y port\nll. viij s.\n\nAb asò noy compte que lo escolà? y la\ntia? y jo y ajudarem? a donar? manobra\ny portar aygua faran lo que seran\nseruits\n\n\t\t\t\tll. xv s. \n\t\t\t     viiij ll.   x s. iiij\n\t\t\t        10 .     5 s. 4\n\n//3//\n\nFa asaber qui fa los coranta sous que feya la senyora? Sapilla? y\nque no’s troba qui’ls a de pagar reb-se? sobre una\npessa de terra al pont de les Bigues vengen si’n\ntenen clarisia? y qui té dita pessa.\n\n//4//\n\nCompte donat per mi Joan\nMassart per les obres afetes\na la rectoria de Castellar.\nJa és pagat per letra n’i\na feta a la comunitat y pagasse\na mi Arnau lo albarà és\nen lo libre.\n\t\t\t10 ll. 5 s. 4"
+    },
+    "doc_122_fol_2": {
+      "titol": "Castellar II – 122, fol. 2 - Transcripció Original",
+      "text_complet": "Castellar II – 122\n\n//1//\nMemorial del que he gastat en la Rectoria de Castellar\n\nPrimo per 20 quarteras cals de port y compra\n2 ll. 1 s.\nMés per 200 rajolas, port y compra\n1 ll. s.\nMés per 100 teulas port y compra\n1 ll. 4 s.\nMés per 90 càrregas de arena\n2 ll. s.\nMés per 6 bigas port y compra\n3 ll. 12 s.\nMés per 12 llates\nll. 12 s.\nMés per 6 cabirons\nll. 12 s.\nPresent de mj Steue Roca fra. pagant mº Barthomeu Castell benidiciat? deurà? fisca? del Pi a Narcís Carner de Castellar duas lliuras y cuatre sous per dos centes rajolas y cent teulas dich\n2 ll. 4 s.\nMés a pagat dit Castell an en Font de St. Julià de Altura set lliuras y catorse sous per vint corteras de cals y sis bigas, tot posat en dita rectoria. Val dich\n7 ll. 14 s.\nMés a pagat dit Castell per quoranta portadoras de arena a duas lliuras dich\n2 ll. s.\nMés a pagat dit Castell per adobar lo cup y botas sinch lliuras y vujt sous, dich\n5 ll. 8 s.\nMés a pagat per dotse llatas y sis cabirons dotse reals, dich\n1 ll. 4 s.\n//2//\n\nMés he pagat dotze reals per 6 quintars de guix, val\n1 ll. 4 s.\nPrt.? danj Steua Roca prevera t’a? pagat mº Barthomeu Castell dotse reals y? per tres posts deu sous y mix, dich\nll. 10 s. 6\nDimecres a 23 de setembre pas? de burch?\n\nDijous a 24 pugí a Castellar ab lo mestre de cases y ab tres fadrins per ???? la quasa lo mestre 8 s., la un fadrí 6s., los dos 5 s. cada u.\n\nPrimo donj al mestre un trentj a bon compte\n3 ll. 6 s.\nMés la un fadrí per tres jornals quinse sous.\nll. 15 s.\nMés comprí sinch francicis? valen nou sous y mitg\nll. 9 s. 6\nMés un real de guix.\n\nMés un real de pega per lo cup\nll. 4 s.\nMés dos reals per un llibant, dich\nll. 4 s.\nMés comprí tres golfos per una porta\nll. 8 s.\nTé rebut Nargas sis lliuras y dinou sous\n6 ll. 19 s.\nMés 3 post\nll. 10 s. 6"
+    },
+    "doc_147": {
+      "titol": "Castellar II – 147 - Transcripció Original",
+      "text_complet": "Castellar II – 147\n\n//1//\n\nNosaltres Joan la Guarda, boter de la vila d’Esparaguera, y Joan\nEndral?, boter de St. Llorens Savall tots del bisbat de Barcelona, de grat\ny certa scièntia tots dos juntament per fer de nostra offici y treballar junts\nconfessam y fem fe com tenim rebut de mº Esteua Roca prevere\ny vicari arrendador de la prendas? y seruitat de la rectoria de St. Este-\nua de Castellar de dit bisbat de Barcelona la summa y quantitat de\nquatra lliures y sis sous, dich 4 ll. 6 s. moneda Barcelona, les quals\nnos paga per feyna auem feta en lo seller de dita rectoria, ço és\nper fer lo cap de la bota de cadireta de 8 càrregas tot nou i més per\nsimentar lo cup ab tot lo manester, i més per religar tots los cèrcols\nde la dita bota de cadireta, i més per mudar los cèrcols a una bota de\nsinch càrregas, y tota dita feyna de mans y ? del necessari mun-\nta ditas 4 ll. 6 s. que tenim rebudas sense la despesa, y per lo ver\nno saber d’escríurer ne fem fer lo present albarà de veritat y de rebuda ab\nvoluntat nostra y en presèntia nostra per mans de mi Jaume\nRoca vicari de Castellar, vuy als 30 de octubre de 1628.\n\n//2//\n\nObras de Castellar 82\n\nCompta de gasto per botas ? per\nla rectoria de Castellar."
+    },
+    "doc_122": {
+      "titol": "Castellar II – 122 - Transcripció Original",
+      "text_complet": "Castellar II – 122\n\n//1//\nMemorial del que he gastat en la Rectoria de Castellar\n\nPrimo per 20 quarteras cals de port y compra\n2 ll. 1 s.\nMés per 200 rajolas, port y compra\n1 ll. s.\nMés per 100 teulas port y compra\n1 ll. 4 s.\nMés per 90 càrregas de arena\n2 ll. s.\nMés per 6 bigas port y compra\n3 ll. 12 s.\nMés per 12 llates\nll. 12 s.\nMés per 6 cabirons\nll. 12 s.\nPresent de mj Steue Roca fra. pagant mº Barthomeu Castell benidiciat? deurà? fisca? del Pi a Narcís Carner de Castellar duas lliuras y cuatre sous per dos centes rajolas y cent teulas dich\n2 ll. 4 s.\nMés a pagat dit Castell an en Font de St. Julià de Altura set lliuras y catorse sous per vint corteras de cals y sis bigas, tot posat en dita rectoria. Val dich\n7 ll. 14 s.\nMés a pagat dit Castell per quoranta portadoras de arena a duas lliuras dich\n2 ll. s.\nMés a pagat dit Castell per adobar lo cup y botas sinch lliuras y vujt sous, dich\n5 ll. 8 s.\nMés a pagat per dotse llatas y sis cabirons dotse reals, dich\n1 ll. 4 s.\n//2//\n\nMés he pagat dotze reals per 6 quintars de guix, val\n1 ll. 4 s.\nPrt.? danj Steua Roca prevera t’a? pagat mº Barthomeu Castell dotse reals y? per tres posts deu sous y mix, dich\nll. 10 s. 6\nDimecres a 23 de setembre pas? de burch?\n\nDijous a 24 pugí a Castellar ab lo mestre de cases y ab tres fadrins per ???? la quasa lo mestre 8 s., la un fadrí 6s., los dos 5 s. cada u.\n\nPrimo donj al mestre un trentj a bon compte\n3 ll. 6 s.\nMés la un fadrí per tres jornals quinse sous.\nll. 15 s.\nMés comprí sinch francicis? valen nou sous y mitg\nll. 9 s. 6\nMés un real de guix.\n\nMés un real de pega per lo cup\nll. 4 s.\nMés dos reals per un llibant, dich\nll. 4 s.\nMés comprí tres golfos per una porta\nll. 8 s.\nTé rebut Nargas sis lliuras y dinou sous\n6 ll. 19 s.\nMés 3 post\nll. 10 s. 6"
+    },
+    "doc_127": {
+      "titol": "Castellar II – 127 - Transcripció Original",
+      "text_complet": "Castellar II – 127\n\n//1//\n\nSenyor Guasch\n\nJa’s recordarà V.M. quant era assí per St. Steua quedaria a <a> preu fet lo adop del cup y de algunas portas y finestras y altres coses per preu de nou lliuras, ara està assí lo mestre treballant tindrà mix feta la fahena acorre-li auer menester dinés uns xixanta reals, perçò V.M. se servuirà fer-los-y donar perquè diu los té necessaris per tenir la dona als darrers dies de parir y confiat o farà no dich més.\n\nSuplicant al senyor a V.M. guarde ?ompat de Castellar y juny als 5 de 1612.\n\nAl senyor Llaumet y als ??\n\n\nJo Pera? Colomer, fuster de Sant Llorens Sauall, confés auer rebut del senyor Lluís Ferro preuere benefesiat en lo Pi sis liures dich 6 ll. s. hi són per part hi paga de hun preu fet per adobar hi fer portes hi finestres hi altres coses en la casa hi rectoria de Sant Asteua de Castellar a uenguts ab los procuradós de la Reuerent Comunitat ab nou liures lo restant de las quals se li donaran en auer acabada dita feina. Hi per lo uer hi no saber d’escriure ne fas fer lo present alberà de uoluntat mia de mà de M? Fransesc Guasch? botiguer de teles [± 2]ula F? vui abitant en Barselona a 6 de juny 1612.\n\n//2//\n\nAl reverent senyor Pau Guasch a qui Nostre Senyor guarde etc.?\nEn lo Pi.\n\nEn Barcelona.\n\nObras de Castellar nº 24."
+    },
+    "doc_142": {
+      "titol": "Castellar II – 142 - Transcripció Original",
+      "text_complet": "Castellar II – 142\n\n//1//\n\nJo, Joan Casals, mestre de cases de la parròquia de Sabadell\ntinc rebut de mº Fransès Coder prevere altra dels procuradors dels\npreueres de la comunitat del Pj sis lliures dich 6 ll. y són\nper la fàbrica de una finestra tinc feta a mas costes\nen la casa de la rectoria de Castellar\ny del dit tinc rebut vuyt  lliures y catorze sous dich\n8 ll. 14 s. y són per la fàbrica de una canal y teula-\nda y canonades y la tortugada de la dita casa y recor-\nrement de dita casa y teulada y altres coses necessàries en\ndita teulada y per ser la veritat y no saber de scriu-\nre de voluntat mia fas fer lo present albarà fet per\nmans de mj Pau Coll prevere vuy als de janer\nany 1606.\n\n//2//\n\nDos albarans d[e]\nobres de la ca[sa]\nde la rectoria [de]\nCastellar de 6 [ll.]\n\t          8 [ll. 14 s.]\n\n1606"
+    },
+    "doc_131": {
+      "titol": "Castellar II – 131 - Transcripció Original",
+      "text_complet": "Castellar II – 131\n\n//1//\n\nDie decima nona mensis julij anno\nanativitate domini millesimo sexcentesimo\nsexagesimo septimo in parochia Sancti\nEstephani de Castellar Barcinonae dioecesis.\n\nNos Jacobus Gorina et Petrus Tor-\nres faber lignarij et boterij villae\nTarratiae Barcinonae dioecesis omnes simul\nconstemus? et in bona aesctate? recog-\nnosimus uobis reverendo domino Petro Serra\narrendatario ecclesiae parochialis\nSancti Estephani de Castellar dicta Barcinonensis?\ndiocesis ? quod de dictis et soluictis?\nnobis realiter et de facto pecunia nu-\nmerata ? decim solidos monete\nBarcinonae et sunt pro uno jornali per\nnos laborato in faciendo januam? que\nportam? del celler domi recthoriae Sancti\nEstephani de Castellar dictae Barcinonae dioecesis\net ex alia parte ? ? pro\nexpensa et medio juramento? ad dominum\ndeum et ejus? sancta quatuor euangelia mani-\nbus nostris corporaliter ? dicemus?\nquod consumplictes? in dicta ianua quod\ncontinetur? in quodam memoriale theno-\nris sequentis: primo per quatra posts de\npi a rahó de dos reals per cada post\nsetse sous. Item per tres llatas de pi\na raó de vint dinés llata sinch sous.\n\n//2//\n\nItem per claus tres sous y nou dinés.\nItem per adobar lo cub obra de dita\nrectoria nou sous. Et ideo renunsi-\nando. Actum.\n\nTestes sunt reverendus Raymundus\nTrullas presbyter et vicarius Sancti Ju-\nliani de Altura et Bartholomeus\nParalo? laborator de Castellar vel?\nBarccinonae dioecesis.\n\nIn quoniam? fidem ego Michael Comelles\npresbyter ac rector parochialis ecclesiae\nSancti Felicis de Castellar alias del Racó, Barcinonae\ndioecesis auctoritatibus apostolica et ordinaria\nnottarii publici dictae parochiae hic ro-\ngatus me subscribo et meum quo utor\nappono sig+num."
+    },
+    "doc_128": {
+      "titol": "Castellar II – 128 - Transcripció Original",
+      "text_complet": "Castellar II – 128\n\n//1//\n\nJo Berengo Corderas mestra de casas abytant en lo loc de les Fàbregues de la paròquja de Sanct Esteua de Castellar confés y atorc auer rebut de mosent Pera Pujades preuera y vycarj de djta peròquia tres ljuras y nou sous, dyc iii ll. viiii s. y són per les mans y manobra de fer lo buguader y sendrer conprenent-s’y sis jornals del mestra y del moso lo preu suma de duas liuras y sinc sous y conprenent-s’y sinc corteras de cals [una arruga tapa una línia de text] sous y mjg y la regola de port quatra sous y de compra quatra sous y mjg y l’anjmal per tregynar la cals y sor[r]a tres sous 6 tot preu suma de la demun djta candjtat de tres ljuras nou sous y per ser axí verjtat jo no saber de escrjura de voluntat mja fas fer lo present albarà de mà de Bartomeu Sellent pajès de djta peròquja vuy als xxviiij de noembra de l’any 1613."
+    },
+    "doc_140": {
+      "titol": "Castellar II – 140 - Transcripció Original",
+      "text_complet": "Castellar II – 140\n\n//1//\n\nMemorial del que c’és gastat per adobar\nla paret del miga de la cujna.\n\nPer cals, sorra, catorse sous y per lo mestre\njornal y despesa cet sous y lo dit tinc\nrebut yo Barango Corderes mestre de casses,\ny per no saber de scriure fas fer lo\npresent per mans de mi Antich Bar-\nba vuy als 2 de janer de 1605\n\n\t\t\t1 ll. 1 s.\n\n//2//\n\nAlbarà de\nobres de Castellar\nde 1 ll. 1 s.\n\n1605"
+    },
+    "doc_125": {
+      "titol": "Castellar II – 125 - Transcripció Original",
+      "text_complet": "Castellar II – 125\n\n//1//\n\nJo Miquel? Balle monjo habitant en la vila de Tarraça confés aber rebut de mº Steua Roca prevere y arrendador de la perrochial de St. Steua de Castellar quinse sous dich 15 s., los quals me a pagats per un pany y clau he fet per una instàntia de la rectoria de Castellar y per un ? de un pany y clau de la porta forana de dita rectoria y per ser axí la veritat y de voluntat mia ne fas fer lo present per mans de mº Chrstòfol Texidor, prevere y vicari de dita perrochial, vuy als 20 de agost de 1621.\n\nJo Barango Corderes mestre de cases habitant en les Fàbregas de la perròchia de St. Steua de Castellar confés aver rebut de mº Steua Roca, prevere y arrendador de dita perrochial la summa y quantitat de una lliure y sis sous, dich 1 ll. 6 s.  los quals me a pagats per tres quintàs de gix y per port de dit gix y tan bé per dos jornals he treballat en la rectoria de Castellar, y dit gix ha seruit per dita rectoria, y per ser axí la veritat ne fas fer lo present, vuy als 27 de agost de 1621 per mi Christòfol Texidor, prevere y vicari de dita isglésia.\n\nJo, Joan Colomer, boter, habitant en la perròchia de St. Llorens Çavall, confés aver rebut del susdit Steua Roca quinse sous, dich 15 s. los quals me an pagats per feyna feta en dita rectoria de Castellar so és, es fan fer unas botas de cadireta y religar tots los sèrcols y tanbé per quatre sèrcols petits he posats en altre bota y per ser axí la veritat y de voluntat mia ne fas fer lo present pne? susdit Texidor vuy als 4 de setembre de 1621.\n\n//2//\n\nObras de ferro de la Rectoria de Castellar nº 22.\n\nLa pòlisa del mes de jener\t\t8 ll. 14 s. 9\n\nLa pòlisa del mes de febrer\t\t2 ll. 14 s. 4"
+    }
+  },
+  "n12": {
+    "titol": "Bugader (Higiene)",
+    "explicacio": "Safareig d'obra i dipòsit per blanquejar roba amb cendra construït el 1613 per Berengo Corderas.",
+    "doc_ref": "Castellar II – 128",
+    "oficial": "Berengo Corderas (Mestre de Cases)",
+    "data_doc": "29 de novembre de 1613",
+    "text_transcrit": "mans y manobra de fer lo buguader y sendrer",
+    "color": "rgba(0, 150, 136, 0.4)",
+    "id_font": "doc_128"
+  },
+  "n13": {
+    "titol": "Pastera de Cuina",
+    "explicacio": "Estructura protegida per la reparació estructural de la paret divisòria de la cuina l'any 1605.",
+    "doc_ref": "Castellar II – 140",
+    "oficial": "Barango Corderas (Mestre de Cases)",
+    "data_doc": "2 de gener de 1605",
+    "text_transcrit": "adobar la paret del miga de la cujna",
+    "color": "rgba(255, 235, 59, 0.4)",
+    "id_font": "doc_140"
+  },
+  "n16": {
+    "titol": "Llit d'Àlber i Llibrets",
+    "explicacio": "Dignificació de seguretat de l'estança amb forjats encarregats al ferrer Miquel Balle per custodiar béns.",
+    "doc_ref": "Castellar II – 125",
+    "oficial": "Miquel Balle",
+    "data_doc": "20 d'agost de 1621",
+    "text_transcrit": "un pany y clau he fet per una instàntia de la rectoria",
+    "color": "rgba(205, 220, 57, 0.4)",
+    "id_font": "doc_125"
+  }
+}

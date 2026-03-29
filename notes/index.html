@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Visor Arqueològic de Castellar Vell - www</title>
+    <style>
+        :root {
+            --bg-color: #fcfbf8;
+            --text-color: #2c3e50;
+            --accent-color: #8d624a;
+            --card-bg: rgba(255, 255, 255, 0.98);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #articul-container {
+            max-width: 850px;
+            background: white;
+            padding: 80px 100px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        #popup-container {
+            position: fixed;
+            right: 40px;
+            top: 40px;
+            width: 420px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            pointer-events: none;
+        }
+
+        .note-card {
+            background: var(--card-bg);
+            border-left: 6px solid var(--accent-color);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
+            pointer-events: all;
+        }
+
+        .note-card h4 {
+            margin: 0 0 8px 0;
+            color: var(--accent-color);
+        }
+
+        .note-card p {
+            margin: 0;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+
+        .tag-ref {
+            font-size: 0.75em;
+            background: #f0ede9;
+            padding: 4px 12px;
+            border-radius: 6px;
+            color: #7d6b5d;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 3000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            line-height: 1;
+        }
+
+        #modal-body {
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+            margin-top: 20px;
+        }
+
+        #modal-title {
+            margin-top: 0;
+            color: var(--accent-color);
+            border-bottom: 2px solid #f0ede9;
+            padding-bottom: 10px;
+            margin-right: 30px;
+        }
+
+        .transcription {
+            font-family: 'Georgia', serif;
+            font-size: 0.95em;
+            color: #5c4d43;
+            background: #f7f4f0;
+            padding: 12px 16px;
+            margin: 12px 0 0 0;
+            border-left: 3px solid #d4c5b9;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .card-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .doc-link {
+            font-size: 0.8em;
+            color: white;
+            background: var(--accent-color);
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .doc-link:hover {
+            background: #6a4936;
+        }
+
+        .layer-base {
+            display: inline;
+            position: relative;
+            cursor: pointer;
+            padding: 6px 0px;
+            margin: 0;
+            transition: background 0.1s ease;
+            -webkit-box-decoration-break: clone;
+            box-decoration-break: clone;
+        }
+
+        p {
+            line-height: 2.2;
+            margin-bottom: 2em;
+            text-align: justify;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--accent-color);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+            font-size: 0.85em;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #f0ede9;
+        }
+
+        .footnotes {
+            margin-top: 3em;
+            border-top: 1px solid #ddd;
+            padding-top: 1em;
+            font-size: 0.82em;
+            color: #666;
+        }
+
+        .footnotes p {
+            line-height: 1.6;
+            margin-bottom: 0.4em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="document-modal" class="modal-overlay" style="display: none;"
+        onclick="if(event.target===this) closeModal()">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 id="modal-title"></h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <div id="popup-container"></div>
+    <div id="articul-container">
+        <div id="content">Carregant article...</div>
+    </div>
+    <script>
+        // ── Estat global ──────────────────────────────────────────────────────
+        let notesData = {};
+        const idToLevel = {};
+        let lockedIds = [];
+        let currentPopupIds = "";
+
+        // ── Renderitzat de Markdown ───────────────────────────────────────────
+        function renderMarkdown(text) {
+            // Separa footnotes del cos principal
+            const fnSplit = text.split(/\n(?=\[\^)/);
+            let body = fnSplit[0];
+            const fnLines = fnSplit.slice(1).join('\n');
+
+            // Processa el cos
+            let html = body
+                .replace(/\|\s*(.*?)\s*\|/g, match => match) // deixa taules intactes per ara
+                .replace(/^### (.*)/gm, '<h3>$1</h3>')
+                .replace(/^## (.*)/gm, '<h2>$1</h2>')
+                .replace(/^# (.*)/gm, '<h1>$1</h1>')
+                .replace(/^\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\[\^(\w+)\]/g, '') // elimina les referències de footnote inline
+                .replace(/\n\n/g, '</p><p>');
+
+            // Processa taules simples
+            html = html.replace(/(\|.*\|\n)+/g, match => {
+                const rows = match.trim().split('\n');
+                let tableHtml = '<table>';
+                rows.forEach((row, i) => {
+                    if (row.match(/^\|[-:\s|]+\|$/)) return; // línia separadora
+                    const cells = row.split('|').filter((c, idx, arr) => idx > 0 && idx < arr.length - 1);
+                    const tag = i === 0 ? 'th' : 'td';
+                    tableHtml += '<tr>' + cells.map(c => `<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
+                });
+                tableHtml += '</table>';
+                return tableHtml;
+            });
+
+            // Processa llistes
+            html = html.replace(/<\/p><p>\*\s+(.*?)(?=<\/p>|$)/g, (match, item) => {
+                return `</p><p><li>${item}</li>`;
+            });
+
+            // Processa footnotes
+            let fnHtml = '';
+            if (fnLines.trim()) {
+                fnHtml = '<div class="footnotes">';
+                fnLines.split('\n').forEach(line => {
+                    const fn = line.match(/^\[\^(\w+)\]:\s*(.*)/);
+                    if (fn) fnHtml += `<p><sup>${fn[1]}</sup> ${fn[2]}</p>`;
+                });
+                fnHtml += '</div>';
+            }
+
+            return { body: `<p>${processStratigraphy(html)}</p>`, footnotes: fnHtml };
+        }
+
+        // ── Motor estratigràfic ───────────────────────────────────────────────
+        function processStratigraphy(html) {
+            const markerRegex = /<m-(start|end)\s+id=["'](.*?)["']>/g;
+            let parts = [], lastIndex = 0, match;
+            while ((match = markerRegex.exec(html)) !== null) {
+                parts.push({ type: 'text', content: html.substring(lastIndex, match.index) });
+                parts.push({ type: match[1], id: match[2] });
+                lastIndex = match.index + match[0].length;
+            }
+            parts.push({ type: 'text', content: html.substring(lastIndex) });
+
+            // Construïm intervals de cada aparició de cada nota
+            // Una nota pot aparèixer diverses vegades al text
+            const noteInstances = []; // {id, start, end}
+            let cursor = 0;
+            const openStack = {}; // id -> posició d'inici
+            parts.forEach(p => {
+                if (p.type === 'start') {
+                    openStack[p.id] = cursor;
+                } else if (p.type === 'end' && openStack[p.id] !== undefined) {
+                    noteInstances.push({ id: p.id, start: openStack[p.id], end: cursor });
+                    delete openStack[p.id];
+                } else if (p.type === 'text') {
+                    cursor += p.content.length;
+                }
+            });
+
+            // Assigna nivells per nota única (primera aparició) per garantir el desplaçament coherent
+            // Si una nota apareix 2 vegades, la 2a NO sobreescriu el nivell de la 1a
+            const seenIds = new Set();
+            const levelOccupiedUntil = [];
+            const uniqueFirstInstances = noteInstances
+                .sort((a, b) => a.start - b.start)
+                .filter(inst => {
+                    if (seenIds.has(inst.id)) return false;
+                    seenIds.add(inst.id);
+                    return true;
+                });
+
+            uniqueFirstInstances.forEach(inst => {
+                let lvl = 0;
+                while (levelOccupiedUntil[lvl] > inst.start) { lvl++; }
+                idToLevel[inst.id] = lvl;
+                levelOccupiedUntil[lvl] = inst.end;
+            });
+
+            // Construeix spans amb múltiples IDs actius
+            let result = "", activeIds = [];
+            parts.forEach(part => {
+                if (part.type === 'start') {
+                    if (!activeIds.includes(part.id)) activeIds.push(part.id);
+                } else if (part.type === 'end') {
+                    activeIds = activeIds.filter(id => id !== part.id);
+                } else {
+                    if (activeIds.length > 0) {
+                        result += `<span class="layer-base" data-ids="${activeIds.join(',')}">${part.content}</span>`;
+                    } else {
+                        result += part.content;
+                    }
+                }
+            });
+            return result;
+        }
+
+        // ── Modal Document Font ───────────────────────────────────────────────
+        function openModal(fontId) {
+            if (!notesData.fonts || !notesData.fonts[fontId]) return;
+            const fontData = notesData.fonts[fontId];
+            document.getElementById('modal-title').textContent = fontData.titol || 'Document';
+            document.getElementById('modal-body').textContent = fontData.text_complet || '';
+            document.getElementById('document-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('document-modal').style.display = 'none';
+        }
+
+        // ── Offsets per ordre local (0 = el més nou/top, 1 = segon, ...) ────────
+        function getLocalOffset(ordinal) {
+            // ordinal 0 = el que entra més tard → 1px,1px
+            // ordinal 1 → -1px,-1px
+            // ordinal 2 → 2px,2px ...
+            const magnitude = Math.ceil((ordinal + 1) / 2);
+            const direction = (ordinal % 2 === 0) ? 1 : -1;
+            return { x: magnitude * direction, y: magnitude * direction };
+        }
+
+        // ── Motor de ressaltat ────────────────────────────────────────────────
+        function updateView(triggerIds) {
+            const allLayers = document.querySelectorAll('.layer-base');
+            const popup = document.getElementById('popup-container');
+            allLayers.forEach(el => { el.style.backgroundColor = "transparent"; el.style.backgroundImage = "none"; });
+
+            const effectiveIds = lockedIds.length > 0 ? lockedIds : triggerIds;
+            const idsKey = [...effectiveIds].sort().join(',');
+
+            if (effectiveIds.length === 0) { popup.innerHTML = ''; currentPopupIds = ""; return; }
+
+            if (currentPopupIds !== idsKey) {
+                popup.innerHTML = '';
+                effectiveIds.forEach(id => {
+                    const n = notesData[id]; if (!n) return;
+                    const card = document.createElement('div'); card.className = 'note-card';
+                    card.innerHTML = `<div class="tag-ref">${n.doc_ref}</div><h4>${n.titol}</h4><p>${n.explicacio}</p>`;
+
+                    if (n.text_transcrit) {
+                        card.innerHTML += `<div class="transcription">«${n.text_transcrit}»</div>`;
+                    }
+
+                    const links = [];
+                    if (n.id_font && notesData.fonts && notesData.fonts[n.id_font]) {
+                        links.push(`<button onclick="openModal('${n.id_font}')" class="doc-link" style="border:none; cursor:pointer; font-family:inherit;">📜 Llegir font completa</button>`);
+                    }
+                    if (n.url_original) links.push(`<a href="${n.url_original}" target="_blank" class="doc-link">🏛️ Original</a>`);
+                    if (n.url) links.push(`<a href="${n.url}" target="_blank" class="doc-link">🔗 Enllaç</a>`);
+
+                    if (links.length > 0) {
+                        card.innerHTML += `<div class="card-links">${links.join('')}</div>`;
+                    }
+
+                    popup.appendChild(card);
+                });
+                currentPopupIds = idsKey;
+            }
+
+            allLayers.forEach(el => {
+                const elIds = el.getAttribute('data-ids').split(',');
+                const activeInSpan = elIds.filter(id => effectiveIds.includes(id) && notesData[id]);
+                if (activeInSpan.length === 0) return;
+
+                // De més nou (last) a més vell (first): el primer en CSS queda a sobre
+                // Cadascun té una posició constant basada en el seu nivell `idToLevel[id]` de tot el text.
+                // Ordenem de nivell més alt (més nou) a més baix (més antic) per l'ordre CSS.
+                const sortedIds = [...activeInSpan].sort((a, b) => idToLevel[b] - idToLevel[a]);
+
+                const bgs = [], poss = [];
+                sortedIds.forEach(id => {
+                    const col = notesData[id].color;
+                    const lvl = idToLevel[id] || 0;
+
+                    let off;
+                    if (lvl === 0) {
+                        off = 0;
+                    } else {
+                        const magnitude = Math.ceil(lvl / 2) * 2;
+                        const sign = (lvl % 2 === 1) ? 1 : -1;
+                        off = sign * magnitude; // ±2, ±4...
+                    }
+
+                    // X = 0 sempre, Y és la posició global conservada de la nota
+                    const posX = 0;
+                    const posY = 6 + off;
+
+                    bgs.push(`linear-gradient(${col}, ${col})`);
+                    poss.push(`${posX}px ${posY}px`);
+                });
+
+                el.style.backgroundColor = 'transparent';
+                el.style.backgroundImage = bgs.join(',');
+                el.style.backgroundPosition = poss.join(',');
+                el.style.backgroundRepeat = 'no-repeat';
+                el.style.backgroundSize = '100% calc(100% - 12px)';
+                el.style.boxShadow = 'none';
+            });
+        }
+
+        // ── Esdeveniments ─────────────────────────────────────────────────────
+        function attachEvents() {
+            const content = document.getElementById('content');
+            content.onmouseover = e => {
+                const l = e.target.closest('.layer-base');
+                if (l && lockedIds.length === 0) updateView(l.getAttribute('data-ids').split(','));
+            };
+            content.onmousemove = e => {
+                const l = e.target.closest('.layer-base');
+                if (l && lockedIds.length === 0) {
+                    const ids = l.getAttribute('data-ids').split(',');
+                    if ([...ids].sort().join(',') !== currentPopupIds) updateView(ids);
+                }
+            };
+            content.onmouseout = e => {
+                if ((!e.relatedTarget || !e.relatedTarget.closest('.layer-base')) && lockedIds.length === 0) updateView([]);
+            };
+            content.onclick = e => {
+                const l = e.target.closest('.layer-base');
+                if (l) {
+                    const ids = l.getAttribute('data-ids').split(',');
+                    lockedIds = ([...lockedIds].sort().join(',') === [...ids].sort().join(',')) ? [] : ids;
+                    updateView(lockedIds);
+                } else { lockedIds = []; updateView([]); }
+            };
+        }
+
+        // ── Arrencada ─────────────────────────────────────────────────────────
+        async function boot() {
+            try {
+                const notesRes = await fetch('./notes.json?v=' + Date.now());
+                notesData = await notesRes.json();
+                // Colors rgba: els mantenim tal com estan (transparència inclosa)
+
+                const articleRes = await fetch('./article.md?v=' + Date.now());
+                if (articleRes.ok) {
+                    const text = await articleRes.text();
+                    const { body, footnotes } = renderMarkdown(text);
+                    document.getElementById('content').innerHTML = body + footnotes;
+                    attachEvents();
+                } else {
+                    document.getElementById('content').innerHTML = "No s'ha trobat 'article.md'.";
+                }
+            } catch (e) {
+                console.error("Error:", e);
+                document.getElementById('content').innerHTML = "Error: " + e.message;
+            }
+        }
+
+        window.onload = boot;
+    </script>
+</body>
+
+</html>
