@@ -1,0 +1,436 @@
+{
+    "works": [
+        {
+            "id": 1,
+            "title": "Llibres de determinacions",
+            "description": "Llibres on es registraven les deliberacions i determinacions dels beneficiats del Pi.",
+            "abbrev": "LD"
+        }
+    ],
+    "docs": [
+        {
+            "id": 3,
+            "work_id": 1,
+            "title": "Unió de Castellar ab aquesta nostra església del Pi.",
+            "date": "26/01/1561",
+            "text": "<n70>Die XXVI de janer MDLXI</n70>\nÉs vinguda una letra de <n71>Roma</n71> de <n72>Mn. Francesch Robuster</n72> en la qual nos ha tremesa la butlla de la unió de la parrochial de <n73>St. Steue de Castellar</n73> ab aquesta Comunitat y per obs de las distribucions cotidianes inter [frase gairebé il·legible] y dit die fonch //f 8v// presentada al venerable <n74>Mn. Anthoni Verdaguer</n74>, òlim rector, al qual se li ha de respondra toto tempore vite sue LXXXVI ll. et post mortem per las <n75>laudas y prima cantadas</n75>, appar en poder <n78>d'en <n87>Joan Monjo</n87>, notari de <n88>Barcelona</n78></n88>.\n",
+            "ref": "B-8r; B-8v",
+            "loc_id": null,
+            "auth_id": null
+        },
+        {
+            "id": 4,
+            "work_id": 1,
+            "title": "Procura per la possessió de la rectoria de Castellar.",
+            "date": "26/01/1561",
+            "text": "Més determina lo rector y Comunitat que fos feta procura per pendre possessió, y axí en poder de <n80>dit notari</n80> fonc feta procura a <n79>Mn. Joan Conjuncta</n79>, prebere beneficiat nostro.",
+            "ref": "B-8v",
+            "loc_id": null,
+            "auth_id": null
+        },
+        {
+            "id": 5,
+            "work_id": 1,
+            "title": "Quant prenguerem possessió de Castellar.",
+            "date": "31/01/1561",
+            "text": "A XXXI de dit anàrem sinc preberes benefficiats per pendre dita possessió y fonc manat a <n81>Mn. Romeu</n81>, procurador maior, que paguàs los gastos, y confirmàrem lo arrendament a <n82>Mn. Jaume Camporat</n82>, prebere, y intimàrem al síndic y pagesos que de cetero pagasen a la Comunitat com de abans pagauen al dit <n83>Mn. Verdaguer</n83>; y prenguérem <n84><n90>inventari de la rectoria y vaxella del seller y de las scripturas</n84>, appar en poder del <n85>dit notari</n85>.</n90> Foren ab conpayhia de dit <n86>Mn. Conjuncta</n86>: <n91><n95>Mn. Romeu</n91>, procurador</n95>, <n92>Mn. Bernat Ferrer</n92>, <n93>Mn. Molas</n93> y <n94><n96>Joan Gasset</n94>, archiuer</n96>.",
+            "ref": "B-8v",
+            "loc_id": null,
+            "auth_id": null
+        }
+    ],
+    "persons": [
+        {
+            "id": 1,
+            "name": "Francesc Robuster",
+            "info": "Apoderat del Pi"
+        },
+        {
+            "id": 2,
+            "name": "Antoni Verdeguer",
+            "info": "Rector de Sant Esteve de Castellar quan es fa la unió amb el Pi."
+        },
+        {
+            "id": 3,
+            "name": "prova de hue a persona",
+            "info": "hue"
+        },
+        {
+            "id": 4,
+            "name": "Joan Monjo",
+            "info": "Notari de Barcelona"
+        },
+        {
+            "id": 5,
+            "name": "Joan Conjuncta",
+            "info": "Beneficiat del Pi"
+        },
+        {
+            "id": 6,
+            "name": "Mn. Romeu",
+            "info": "Beneficiat del Pi i procurador major"
+        },
+        {
+            "id": 7,
+            "name": "Jaume Camporat",
+            "info": "Arrendador de la rectoria de Castellar"
+        },
+        {
+            "id": 8,
+            "name": "Bernat Ferrer",
+            "info": "Beneficiat del Pi"
+        },
+        {
+            "id": 9,
+            "name": "Mn. Molas",
+            "info": "Beneficiat del Pi"
+        },
+        {
+            "id": 10,
+            "name": "Joan Gasset",
+            "info": "Arxiver del Pi"
+        }
+    ],
+    "locations": [
+        {
+            "id": 1,
+            "name": "asdas",
+            "country": "",
+            "lat": "",
+            "lon": "",
+            "geonameId": null
+        },
+        {
+            "id": 2,
+            "name": "Roma",
+            "country": "Itàlia",
+            "lat": 41.8933203,
+            "lon": 12.4829321,
+            "geonameId": null
+        },
+        {
+            "id": 3,
+            "name": "Sant Esteve de Castellar",
+            "country": "Catalunya",
+            "lat": 1.0,
+            "lon": 2.0,
+            "geonameId": null
+        },
+        {
+            "id": 4,
+            "name": "Roma",
+            "country": "Itàlia",
+            "lat": 41.8933203,
+            "lon": 12.4829321,
+            "geonameId": null
+        },
+        {
+            "id": 5,
+            "name": "Sant Feliu del Racó",
+            "country": "Espanya",
+            "lat": 41.6243462,
+            "lon": 2.068359,
+            "geonameId": null
+        },
+        {
+            "id": 6,
+            "name": "Sant Esteve de Castellar",
+            "country": "Espanya",
+            "lat": 41.613329,
+            "lon": 2.0870438,
+            "geonameId": null
+        },
+        {
+            "id": 7,
+            "name": "Barcelona",
+            "country": "Espanya",
+            "lat": 41.3825802,
+            "lon": 2.177073,
+            "geonameId": null
+        },
+        {
+            "id": 8,
+            "name": "paris",
+            "country": "França",
+            "lat": 48.8588897,
+            "lon": 2.320041,
+            "geonameId": null
+        }
+    ],
+    "keywords": [
+        {
+            "id": 1,
+            "name": "butlla de la unió",
+            "description": "Document papal amb l'autorització de la unió de Castellar al Pi"
+        },
+        {
+            "id": 2,
+            "name": "Comunitat de Beneficiats de Santa Maria del Pi",
+            "description": "Comunitat de beneficiats que es van unir la parròquia de Sant Esteve de Castellar per pagar el mestre de cant."
+        },
+        {
+            "id": 3,
+            "name": "Qui aprova el traspàs de la rectoria al PI",
+            "description": "Sembla que és el responsable del traspàs, a qui la Comunitat es compromet a pagar una pensió fins a la seva mort."
+        },
+        {
+            "id": 4,
+            "name": "prova de hue",
+            "description": "provant el color"
+        },
+        {
+            "id": 5,
+            "name": "Document notarial",
+            "description": "Document citat al text."
+        },
+        {
+            "id": 6,
+            "name": "notaris",
+            "description": "Notaris"
+        },
+        {
+            "id": 7,
+            "name": "motiu de la unió",
+            "description": "Motiu de la unió de Castellar al Pi"
+        },
+        {
+            "id": 8,
+            "name": "data",
+            "description": "Data al document"
+        },
+        {
+            "id": 9,
+            "name": "prova de concepte",
+            "description": "asdfasdfwefwqedf"
+        },
+        {
+            "id": 10,
+            "name": "Inventari de 1561",
+            "description": "Inventari pres pel Pi en la presa de possessió de la rectoria."
+        },
+        {
+            "id": 11,
+            "name": "Document original",
+            "description": ""
+        },
+        {
+            "id": 12,
+            "name": "Mn. Romeu, procurador",
+            "description": "procurador"
+        },
+        {
+            "id": 13,
+            "name": "arxiver",
+            "description": ""
+        },
+        {
+            "id": 14,
+            "name": "confirmàrem",
+            "description": ""
+        },
+        {
+            "id": 15,
+            "name": "benefficiats",
+            "description": ""
+        },
+        {
+            "id": 16,
+            "name": "benefficiats",
+            "description": ""
+        }
+    ],
+    "annotations": [
+        {
+            "id": 70,
+            "type": "keyword",
+            "begin": "1.0",
+            "end": "1.23",
+            "doc_id": 3,
+            "entity_id": 8
+        },
+        {
+            "id": 71,
+            "type": "location",
+            "begin": "1.48",
+            "end": "1.52",
+            "doc_id": 3,
+            "entity_id": 2
+        },
+        {
+            "id": 72,
+            "type": "person",
+            "begin": "1.56",
+            "end": "1.78",
+            "doc_id": 3,
+            "entity_id": 1
+        },
+        {
+            "id": 73,
+            "type": "location",
+            "begin": "1.146",
+            "end": "1.168",
+            "doc_id": 3,
+            "entity_id": 6
+        },
+        {
+            "id": 74,
+            "type": "person",
+            "begin": "1.314",
+            "end": "1.335",
+            "doc_id": 3,
+            "entity_id": 2
+        },
+        {
+            "id": 75,
+            "type": "keyword",
+            "begin": "1.436",
+            "end": "1.459",
+            "doc_id": 3,
+            "entity_id": 7
+        },
+        {
+            "id": 78,
+            "type": "keyword",
+            "begin": "1.476",
+            "end": "1.512",
+            "doc_id": 3,
+            "entity_id": 9
+        },
+        {
+            "id": 79,
+            "type": "person",
+            "begin": "1.128",
+            "end": "1.146",
+            "doc_id": 4,
+            "entity_id": 5
+        },
+        {
+            "id": 80,
+            "type": "person",
+            "begin": "1.97",
+            "end": "1.107",
+            "doc_id": 4,
+            "entity_id": 4
+        },
+        {
+            "id": 81,
+            "type": "person",
+            "begin": "1.89",
+            "end": "1.98",
+            "doc_id": 5,
+            "entity_id": 6
+        },
+        {
+            "id": 82,
+            "type": "person",
+            "begin": "1.172",
+            "end": "1.190",
+            "doc_id": 5,
+            "entity_id": 7
+        },
+        {
+            "id": 83,
+            "type": "person",
+            "begin": "1.298",
+            "end": "1.311",
+            "doc_id": 5,
+            "entity_id": 2
+        },
+        {
+            "id": 84,
+            "type": "keyword",
+            "begin": "1.326",
+            "end": "1.391",
+            "doc_id": 5,
+            "entity_id": 10
+        },
+        {
+            "id": 85,
+            "type": "person",
+            "begin": "1.412",
+            "end": "1.422",
+            "doc_id": 5,
+            "entity_id": 4
+        },
+        {
+            "id": 86,
+            "type": "person",
+            "begin": "1.450",
+            "end": "1.463",
+            "doc_id": 5,
+            "entity_id": 5
+        },
+        {
+            "id": 87,
+            "type": "person",
+            "begin": "1.481",
+            "end": "1.491",
+            "doc_id": 3,
+            "entity_id": 4
+        },
+        {
+            "id": 88,
+            "type": "location",
+            "begin": "1.503",
+            "end": "1.512",
+            "doc_id": 3,
+            "entity_id": 7
+        },
+        {
+            "id": 90,
+            "type": "keyword",
+            "begin": "1.326",
+            "end": "1.423",
+            "doc_id": 5,
+            "entity_id": 11
+        },
+        {
+            "id": 91,
+            "type": "person",
+            "begin": "1.465",
+            "end": "1.474",
+            "doc_id": 5,
+            "entity_id": 6
+        },
+        {
+            "id": 92,
+            "type": "person",
+            "begin": "1.488",
+            "end": "1.505",
+            "doc_id": 5,
+            "entity_id": 8
+        },
+        {
+            "id": 93,
+            "type": "person",
+            "begin": "1.507",
+            "end": "1.516",
+            "doc_id": 5,
+            "entity_id": 9
+        },
+        {
+            "id": 94,
+            "type": "person",
+            "begin": "1.519",
+            "end": "1.530",
+            "doc_id": 5,
+            "entity_id": 10
+        },
+        {
+            "id": 95,
+            "type": "keyword",
+            "begin": "1.465",
+            "end": "1.486",
+            "doc_id": 5,
+            "entity_id": 12
+        },
+        {
+            "id": 96,
+            "type": "keyword",
+            "begin": "1.519",
+            "end": "1.540",
+            "doc_id": 5,
+            "entity_id": 13
+        }
+    ]
+}

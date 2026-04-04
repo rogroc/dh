@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histena - Historical Text Navigation</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent-person: hsla(0, 100%, 50%, 0.2);
+            --accent-person-text: #000;
+            --accent-loc: hsla(120, 100%, 50%, 0.2);
+            --accent-loc-text: #000;
+            --accent-key: hsla(240, 100%, 50%, 0.2);
+            --accent-key-text: #000;
+            --accent-keyword: hsla(240, 100%, 50%, 0.2);
+            --accent-keyword-text: #000;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        aside {
+            width: 300px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .list-section-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 20px 0 10px;
+        }
+
+        .list-item {
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+
+        .list-item:hover {
+            background: #f1f5f9;
+        }
+
+        .list-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        nav {
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 30px;
+        }
+
+        .nav-link {
+            cursor: pointer;
+            padding-bottom: 4px;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow: hidden;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Annotate View */
+        .annotate-view {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .doc-viewer {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            background: white;
+        }
+
+        .doc-meta {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+
+        .meta-item label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .meta-item span {
+            font-weight: 600;
+        }
+
+        #text-area {
+            font-family: 'Georgia', serif;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #334155;
+            white-space: pre-wrap;
+            cursor: text;
+            position: relative;
+            outline: none;
+            padding: 10px;
+            transition: all 0.2s;
+        }
+
+        #text-area[contenteditable="true"] {
+            background: #fff;
+            box-shadow: inset 0 0 0 2px var(--primary);
+            border-radius: 8px;
+        }
+
+        .tag {
+            padding: 0;
+            border-top: 2px solid transparent;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: none;
+            position: relative;
+            display: inline;
+            z-index: 10;
+            /* Negative margins to eliminate gaps between segments */
+            margin-left: -1px;
+            margin-right: -1px;
+        }
+
+        .tag-person {
+            background: var(--accent-person);
+            color: var(--accent-person-text);
+            box-shadow: 1px 0 0 0 var(--accent-person), -1px 0 0 0 var(--accent-person);
+        }
+
+        .tag-location {
+            background: var(--accent-loc);
+            color: var(--accent-loc-text);
+            box-shadow: 1px 0 0 0 var(--accent-loc), -1px 0 0 0 var(--accent-loc);
+        }
+
+        .tag-keyword {
+            background: var(--accent-keyword);
+            color: var(--accent-keyword-text);
+            box-shadow: 1px 0 0 0 var(--accent-keyword), -1px 0 0 0 var(--accent-keyword);
+        }
+
+        .tag[data-first="true"] {
+            border-left: 2px solid transparent;
+            margin-left: 0;
+        }
+
+        .tag[data-last="true"] {
+            border-right: 2px solid transparent;
+            margin-right: 0;
+        }
+
+        .tag.selected {
+            z-index: 1000 !important;
+            filter: brightness(1.1);
+            /* Corredor horitzontal continu (amb un spread d'un píxel extra per evitar talls de píxel) */
+            box-shadow: 0 2px 0 0 var(--primary), 0 -2px 0 0 var(--primary);
+        }
+
+        .tag.selected[data-first="true"] {
+            /* Tancament esquerra: top, bottom i l'extrems esquerre real */
+            box-shadow: 0 2px 0 0 var(--primary), 0 -2px 0 0 var(--primary), -2px 0 0 0 var(--primary);
+        }
+
+        .tag.selected[data-last="true"] {
+            /* Tancament dreta: top, bottom i l'extrems dret real */
+            box-shadow: 0 2px 0 0 var(--primary), 0 -2px 0 0 var(--primary), 2px 0 0 0 var(--primary);
+        }
+        
+        .tag.selected[data-first="true"][data-last="true"] {
+            /* Cas nota d'una sola paraula: contorn complet */
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        #selection-svg { display: none; }
+
+        .overlap-picker {
+            position: fixed;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            z-index: 1000;
+            display: none;
+            min-width: 200px;
+            border: 1px solid var(--border);
+        }
+
+        .overlap-picker .item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .overlap-picker .item:hover {
+            background: #f1f5f9;
+        }
+
+        .overlap-picker header {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 12px;
+            margin-bottom: 5px;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            height: 70px;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .radio-group {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 10px;
+        }
+
+        .radio-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .radio-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow);
+            font-weight: 600;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .btn-ghost:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            max-width: 300px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .tooltip header {
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #94a3b8;
+        }
+
+        .tooltip h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .tooltip p {
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+
+        /* Form Styles (Add Source) */
+        .form-container {
+            width: 800px;
+            margin: 40px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input,
+        textarea,
+        select {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            outline: none;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal {
+            background: white;
+            width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            padding: 30px;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+        }
+
+        .modal-footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <aside>
+        <div class="sidebar-header">Histena</div>
+        <div class="list-container">
+            <div class="list-section-header">Sèries / Llibres</div>
+            <div id="series-list"></div>
+            <div class="list-section-header">Documents</div>
+            <div style="margin-bottom: 10px;">
+                <input type="text" id="doc-search" placeholder="Cerca documents..."
+                    style="width: 100%; padding: 8px; font-size: 0.85rem;" oninput="filterDocs()">
+            </div>
+            <div id="docs-list"></div>
+        </div>
+    </aside>
+
+    <main>
+        <nav>
+            <div class="nav-link" onclick="showTab('projects'); loadProjects();">Projecte</div>
+            <div class="nav-link active" onclick="showTab('annotate')">Anotar</div>
+            <div class="nav-link" onclick="showTab('source'); renderSeriesSelect();">Afegir Font</div>
+            <div class="nav-link" onclick="showTab('dashboard'); loadStats();">Dashboard</div>
+        </nav>
+
+        <!-- Tab: Annotate -->
+        <section id="tab-annotate" class="tab-content active">
+            <div class="annotate-view">
+                <div class="doc-viewer">
+                    <div id="doc-metadata" class="doc-meta">
+                        <div class="meta-item"><label>Títol</label><span id="meta-title">-</span></div>
+                        <div class="meta-item"><label>Data</label><span id="meta-date">-</span></div>
+                        <div class="meta-item"><label>Ref</label><span id="meta-ref">-</span></div>
+                        <div class="meta-item" id="edit-cell"
+                            style="display: none; align-items: center; justify-content: flex-end; gap: 5px;">
+                            <button class="btn-ghost" onclick="editDocParams()"
+                                style="padding: 5px 10px; font-size: 0.8rem; border: 1px solid var(--border);">⚙️
+                                Paràmetres</button>
+                            <button id="btn-edit-doc" class="btn-primary" onclick="editDoc()"
+                                style="padding: 5px 10px; font-size: 0.8rem;">✏️ Text</button>
+                            <button class="btn-danger" onclick="deleteDocument()"
+                                style="padding: 5px 10px; font-size: 0.8rem; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer;">🗑
+                                Eliminar</button>
+                        </div>
+                    </div>
+                    <div id="text-area">Selecciona un document a la barra lateral...</div>
+                </div>
+            </div>
+
+            <div id="update-hint-popup"
+                style="display: none; position: fixed; background: var(--bg-card); border: 2px solid var(--primary); padding: 10px 20px; border-radius: 30px; box-shadow: var(--shadow-lg); z-index: 10000; top: 50%; left: 50%; transform: translate(-50%, -50%); align-items: center; gap: 10px; font-weight: 600; color: var(--primary);">
+                📍 Selecciona nova posició en el text...
+                <button class="btn-ghost" onclick="stopUpdatingPosition()"
+                    style="padding: 2px 10px; font-size: 0.7rem;">Cancel·la</button>
+            </div>
+            <div id="selection-hint" style="color: var(--text-muted); font-size: 0.8rem; display: none;">
+                Seleccionat: <span id="sel-text" style="font-weight: 600"></span></div>
+            <div style="display: flex; gap: 10px">
+                <div id="edit-buttons" style="display: none; gap: 10px;">
+                    <button class="btn-primary" onclick="saveInlineEdit()">Guardar Canvis</button>
+                    <button class="btn-ghost" onclick="cancelInlineEdit()">Cancel·lar</button>
+                </div>
+                <div id="normal-buttons" style="display: flex; gap: 10px; align-items: center;">
+                    <div id="annotate-buttons" style="display: none; gap: 8px;">
+                        <button class="btn-primary tag-person"
+                            style="background: var(--accent-person); color: var(--accent-person-text); border: 1px solid var(--accent-person-text);"
+                            onclick="openSelector('person')">+ Persona</button>
+                        <button class="btn-primary tag-location"
+                            style="background: var(--accent-loc); color: var(--accent-loc-text); border: 1px solid var(--accent-loc-text);"
+                            onclick="openSelector('location')">+ Lloc</button>
+                        <button class="btn-primary tag-keyword"
+                            style="background: var(--accent-key); color: var(--accent-key-text); border: 1px solid var(--accent-key-text);"
+                            onclick="openSelector('keyword')">+ Concepte</button>
+                    </div>
+                    <button id="btn-update-pos" class="btn-ghost" style="display: none;"
+                        onclick="updateAnnotationPosition()">Actualitzar Posició</button>
+                    <button id="btn-edit-entity" class="btn-ghost" style="display: none;" onclick="editEntity()">Editar
+                        Entitat</button>
+                    <button id="btn-delete" class="btn-danger" style="display: none;"
+                        onclick="deleteAnnotation()">Eliminar Anotació</button>
+                    <button id="btn-export" class="btn-ghost" style="display: none;" onclick="exportMD()">Exportar
+                        MD</button>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Tab: Source -->
+        <section id="tab-source" class="tab-content">
+            <div class="form-container">
+                <div class="field-group">
+                    <label>Títol</label>
+                    <input type="text" id="src-title">
+                </div>
+                <div class="field-group">
+                    <label>Sèrie / Llibre</label>
+                    <div style="display: flex; gap: 10px;">
+                        <select id="src-work" style="flex:1"></select>
+                        <button class="btn-ghost"
+                            onclick="document.getElementById('new-work-form').style.display='flex'">+ Nova</button>
+                    </div>
+                </div>
+
+                <div id="new-work-form"
+                    style="display:none; flex-direction:column; gap:10px; padding:15px; background:white; border:1px solid var(--border); border-radius:8px;">
+                    <div style="font-weight: 600; color: var(--primary); margin-bottom: 5px;">Crear Nova Sèrie/Llibre
+                    </div>
+                    <input type="text" id="new-work-title" placeholder="Títol de la Sèrie">
+                    <input type="text" id="new-work-abbrev" placeholder="Abreviatura">
+                    <textarea id="new-work-desc" placeholder="Descripció (opcional)" rows="2"></textarea>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-primary" onclick="saveNewWork()">Guardar</button>
+                        <button class="btn-ghost"
+                            onclick="document.getElementById('new-work-form').style.display='none'">Cancel·la</button>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>Referència / Foli</label>
+                    <input type="text" id="src-ref">
+                </div>
+                <div class="field-group">
+                    <label>Data</label>
+                    <input type="text" id="src-date">
+                </div>
+                <div class="field-group">
+                    <label>Text del document</label>
+                    <textarea id="src-text" rows="12"></textarea>
+                </div>
+                <input type="hidden" id="src-id">
+                <button id="btn-save-doc" class="btn-primary" onclick="saveDoc()">Crear Document</button>
+                <button id="btn-cancel-edit" class="btn-ghost" style="display: none;" onclick="cancelEdit()">Cancel·lar
+                    Edició</button>
+            </div>
+        </section>
+
+        <!-- Tab: Dashboard -->
+        <section id="tab-dashboard" class="tab-content" style="padding: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2>Estat del Projecte</h2>
+                <button class="btn-ghost" onclick="loadStats()">Actualitzar</button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;"
+                id="dashboard-stats">
+                <!-- Stats cards will go here -->
+            </div>
+        </section>
+
+        <!-- Tab: Projects -->
+        <section id="tab-projects" class="tab-content" style="padding: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2>Gestionar Projectes</h2>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="new-project-name" placeholder="Nom del nou projecte..."
+                        style="width: 250px;">
+                    <button class="btn-primary" onclick="createNewProject()">+ Crear Projecte</button>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Selecciona el fitxer de base de dades (.db) per
+                treballar.</p>
+            <div id="projects-list"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                <!-- Projects will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Parameters Modal -->
+        <div class="modal-overlay" id="params-modal">
+            <div class="modal">
+                <h3 style="margin-bottom: 20px; color: var(--text-main);">Editar Paràmetres del Document</h3>
+                <div class="field-group" style="margin-bottom: 10px;">
+                    <label>Títol</label>
+                    <input type="text" id="param-title">
+                </div>
+                <div class="field-group" style="margin-bottom: 10px;">
+                    <label>Sèrie / Llibre</label>
+                    <select id="param-work"
+                        style="width: 100%; border: 1px solid var(--border); padding: 10px; border-radius: 8px;"></select>
+                </div>
+                <div class="field-group" style="margin-bottom: 10px;">
+                    <label>Data</label>
+                    <input type="text" id="param-date">
+                </div>
+                <div class="field-group" style="margin-bottom: 20px;">
+                    <label>Referència / Foli</label>
+                    <input type="text" id="param-ref">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" onclick="saveDocParams()">Guardar Paràmetres</button>
+                    <button class="btn-ghost" onclick="closeParamsModal()">Cancel·lar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Entity Selector Modal -->
+    <div class="modal-overlay" id="selector-modal">
+        <div class="modal">
+            <h3 id="selector-title">Select Entity</h3>
+            <div class="field-group" style="margin-top: 20px;">
+                <input type="text" id="selector-search" placeholder="Search..." oninput="searchEntities()">
+            </div>
+            <div style="max-height: 250px; overflow-y: auto; margin-top: 15px; border: 1px solid var(--border); border-radius: 8px;"
+                id="entity-results">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-ghost" onclick="closeModal()">Tanca</button>
+                <button class="btn-primary" onclick="openNewEntity()">Afegir Nou</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Entity Modal -->
+    <div class="modal-overlay" id="new-entity-modal">
+        <div class="modal">
+            <h3 id="new-entity-title">Nova Entitat</h3>
+            <div class="form-container" style="width: 100%; margin: 20px 0; gap: 10px;">
+                <div class="field-group">
+                    <label>Nom</label>
+                    <input type="text" id="new-entity-name">
+                </div>
+                <div id="entity-extra-fields"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-ghost"
+                    onclick="document.getElementById('new-entity-modal').style.display='none'">Cancel·la</button>
+                <button class="btn-primary" onclick="saveNewEntity()">Guarda</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip & Picker -->
+    <div id="tooltip" class="tooltip"></div>
+    <div id="overlap-picker" class="overlap-picker"></div>
+    <svg id="selection-svg"><path class="selection-path" id="selection-path" d=""></path></svg>
+
+    <script>
+        let currentWork = null;
+        let currentDoc = null;
+        let selectedType = 'person';
+        let works = [];
+        let selection = null;
+        let activeSelection = null; // Lock selection for modals
+        let hoverTimer = null;
+
+        // Init
+        async function init() {
+            // Fetch projects info
+            const res = await fetch('/api/projects?t=' + Date.now());
+            const data = await res.json();
+            
+            // ALWAYS start on the Projects Selection tab to ensure user selects a project
+            showTab('projects');
+            loadProjects();
+
+            // Only background-load works/data if the current project in the backend 
+            // is actually one of the physical .db files in the folder.
+            if (data.projects.includes(data.current)) {
+                try {
+                    const wRes = await fetch('/api/works?t=' + Date.now());
+                    works = await wRes.json();
+                    renderWorks();
+                    renderSeriesSelect();
+                } catch (e) {
+                    console.log("No data loaded: select a valid project first.");
+                }
+            }
+        }
+
+        function renderWorks() {
+            const list = document.getElementById('series-list');
+            list.innerHTML = works.map(w => `
+                <div class="list-item ${currentWork === w.id ? 'active' : ''}" onclick="selectWork(${w.id})">
+                    ${w.title} (${w.abbrev})
+                </div>
+            `).join('');
+        }
+
+        let currentDocs = [];
+        async function selectWork(id) {
+            currentWork = id;
+            renderWorks();
+            const res = await fetch(`/api/docs?work_id=${id}&t=${Date.now()}`);
+            currentDocs = await res.json();
+            renderDocs(currentDocs);
+        }
+
+        function renderDocs(docs) {
+            document.getElementById('docs-list').innerHTML = docs.map(d => `
+                <div class="list-item" onclick="loadDoc(${d.id})">${d.title} (${d.date})</div>
+            `).join('');
+        }
+
+        function filterDocs() {
+            const q = document.getElementById('doc-search').value.toLowerCase();
+            const filtered = currentDocs.filter(d => d.title.toLowerCase().includes(q));
+            renderDocs(filtered);
+        }
+
+        async function loadDoc(id) {
+            const res = await fetch(`/api/doc?doc_id=${id}&t=${Date.now()}`);
+            currentDoc = await res.json();
+
+            document.getElementById('meta-title').textContent = currentDoc.title;
+            document.getElementById('meta-date').textContent = currentDoc.date;
+            document.getElementById('meta-ref').textContent = currentDoc.ref;
+
+            renderAnnotatedText();
+            if (selectedAnnotationId) {
+                 const a = currentDoc.annotations.find(x => x.id === selectedAnnotationId);
+                 if (a) selectAnnotation(a);
+            }
+            document.getElementById('btn-export').style.display = 'block';
+            document.getElementById('edit-cell').style.display = 'flex';
+            showTab('annotate');
+        }
+
+        function renderAnnotatedText() {
+            const raw = currentDoc.text || '';
+            const area = document.getElementById('text-area');
+
+            area.onclick = (e) => { if (!e.target.classList.contains('tag') && !isUpdatingPos) clearSelection(); };
+            area.onmouseup = () => { if (isUpdatingPos && selection) confirmUpdatePosition(); };
+            area.innerHTML = '';
+
+            // Build annotation lookup by id
+            const annotById = {};
+            (currentDoc.annotations || []).forEach(a => {
+                annotById[a.id] = a;
+                delete a._typeIdx; // Clear old assignments
+                delete a._globalOverlapIdx;
+            });
+
+            // Stack-based <n{id}>...</n{id}> to segments (Simplified Logic)
+            const segments = [];
+            const stack = []; // list of annotation objects currently open
+            const tagRe = /<n(\d+)>|<\/n(\d+)>/g;
+            let pos = 0, match;
+            while ((match = tagRe.exec(raw)) !== null) {
+                if (match.index > pos) {
+                    segments.push({ text: raw.slice(pos, match.index), annots: [...stack] });
+                }
+                if (match[1]) { // opening tag
+                    const aid = parseInt(match[1]);
+                    const a = annotById[aid] || { id: aid, type: 'unknown' };
+                    
+                    if (a._globalOverlapIdx === undefined) {
+                        let freeIdx = 0;
+                        while (stack.some(x => x._globalOverlapIdx === freeIdx)) freeIdx++;
+                        a._globalOverlapIdx = freeIdx;
+                    }
+                    
+                    if (a._typeIdx === undefined) {
+                        let freeTypeIdx = 0;
+                        while (stack.some(x => x.type === a.type && x._typeIdx === freeTypeIdx)) freeTypeIdx++;
+                        a._typeIdx = freeTypeIdx;
+                    }
+
+                    stack.push(a);
+                } else { // closing tag
+                    const aid = parseInt(match[2]);
+                    const idx = stack.map(a => a.id).lastIndexOf(aid);
+                    if (idx !== -1) stack.splice(idx, 1);
+                }
+                pos = match.index + match[0].length;
+            }
+            if (pos < raw.length) segments.push({ text: raw.slice(pos), annots: [...stack] });
+
+            // Helper for 3D displacement
+            function getAbsOffset(index) {
+                if (index === 0) return 0;
+                const val = Math.floor((index + 1) / 2) * 2;
+                const sign = index % 2 === 1 ? 1 : -1;
+                return sign * val; // 0, +2, -2, +4, -4...
+            }
+
+            // Hue/type occupancy is already assigned globally now, no need to recalculate per segment.
+
+            const baseHue = { 'person': 0, 'location': 120, 'keyword': 240 };
+
+            // Render segments
+            segments.forEach((seg, segIdx) => {
+                if (seg.annots.length === 0) {
+                    area.appendChild(document.createTextNode(seg.text));
+                } else {
+                    const sorted = [...seg.annots].sort((a, b) => a._globalOverlapIdx - b._globalOverlapIdx);
+                    const n = sorted.length;
+
+                    // Ancoratge de text per cancel·lar desplaçaments del background
+                    const textWrapper = document.createElement('span');
+                    textWrapper.style.position = 'relative';
+                    const topAbs = n > 0 ? getAbsOffset(sorted[n - 1]._globalOverlapIdx) : 0;
+                    textWrapper.style.left = `${-topAbs}px`;
+                    textWrapper.style.top = `${-topAbs}px`;
+                    textWrapper.style.display = 'inline';
+                    textWrapper.style.zIndex = '1';
+                    textWrapper.textContent = seg.text;
+
+                    let child = textWrapper;
+                    // Wrap innermost → outermost with relative offsets
+                    for (let i = n - 1; i >= 0; i--) {
+                        const a = sorted[i];
+                        const absI = getAbsOffset(a._globalOverlapIdx);
+                        const absPrev = i > 0 ? getAbsOffset(sorted[i - 1]._globalOverlapIdx) : 0;
+                        const relOffset = absI - absPrev;
+
+                        const span = document.createElement('span');
+                        span.className = `tag tag-${a.type}`;
+
+                        if (selectedAnnotationId && a.id == selectedAnnotationId) {
+                            span.classList.add('selected');
+                        }
+
+                        // Edge detection for unified selection border (caps)
+                        const inPrev = segIdx > 0 && segments[segIdx - 1].annots.some(x => x.id === a.id);
+                        const inNext = segIdx < segments.length - 1 && segments[segIdx + 1].annots.some(x => x.id === a.id);
+                        if (!inPrev) span.dataset.first = "true";
+                        if (!inNext) span.dataset.last = "true";
+
+                        span.dataset.id = a.id;
+                        span.dataset.type = a.type;
+
+                        span.style.left = `${relOffset}px`;
+                        span.style.top = `${relOffset}px`;
+                        span.style.display = 'inline';
+
+                        if ((a._typeIdx || 0) > 0) {
+                            const shift = a._typeIdx * 25;
+                            span.style.background = `hsla(${(baseHue[a.type] || 0) + shift}, 100%, 50%, 0.2)`;
+                        }
+
+                        span.appendChild(child);
+                        child = span;
+                    }
+                    const outerSpan = child;
+                    outerSpan.onmouseenter = e => showTooltip(e, sorted);
+                    outerSpan.onmouseleave = hideTooltip;
+                    outerSpan.onclick = (e) => {
+                        e.stopPropagation();
+                        if (sorted.length > 1) openOverlapPicker(e, sorted);
+                        else selectAnnotation(sorted[0]);
+                    };
+                    area.appendChild(outerSpan);
+                }
+            });
+        }
+
+        async function openOverlapPicker(e, annots) {
+            const picker = document.getElementById('overlap-picker');
+            picker.style.left = e.clientX + 'px';
+            picker.style.top = e.clientY + 'px';
+            picker.style.display = 'block';
+
+            let html = '<header>Selecciona anotació</header>';
+            for (const a of annots) {
+                const res = await fetch(`/api/entity_info?id=${a.id}&type=${a.type}`);
+                const info = await res.json();
+                html += `
+                    <div class="item" onclick="selectAnnotationById(${a.id}); document.getElementById('overlap-picker').style.display='none'">
+                        <span class="tag-dot tag-${a.type}" style="width:10px; height:10px; border-radius:50%; background:var(--accent-${a.type === 'person' ? 'person' : a.type === 'location' ? 'loc' : 'key'})"></span>
+                        <div style="display:flex; flex-direction:column">
+                            <span style="font-weight:600; font-size:0.9rem">${info.name}</span>
+                            <span style="font-size:0.75rem; color:var(--text-muted)">${a.type}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            picker.innerHTML = html;
+
+            const close = (evt) => {
+                if (!picker.contains(evt.target)) {
+                    picker.style.display = 'none';
+                    document.removeEventListener('click', close);
+                }
+            };
+            setTimeout(() => document.addEventListener('click', close), 10);
+        }
+
+        function selectAnnotationById(id) {
+            // Find the annotation object by ID
+            const a = currentDoc.annotations.find(x => x.id == id);
+            if (a) selectAnnotation(a);
+        }
+
+        // Selection Handling
+        document.addEventListener('selectionchange', () => {
+            const sel = window.getSelection();
+            const area = document.getElementById('text-area');
+            if (sel.rangeCount > 0 && area.contains(sel.anchorNode)) {
+                const range = sel.getRangeAt(0);
+                const text = range.toString().trim();
+                if (text.length > 0) {
+                    selection = {
+                        text: text,
+                        begin: calculateIndex(area, range.startContainer, range.startOffset),
+                        end: calculateIndex(area, range.endContainer, range.endOffset)
+                    };
+
+                    document.getElementById('selection-hint').style.display = 'block';
+                    document.getElementById('sel-text').textContent = text;
+
+                    document.getElementById('annotate-buttons').style.display = 'flex';
+                    if (selectedAnnotationId) {
+                        document.getElementById('btn-update-pos').classList.add('ready');
+                    }
+                    return;
+                }
+            }
+            selection = null;
+            document.querySelectorAll('.btn-ghost').forEach(b => b.classList.remove('ready'));
+            document.getElementById('annotate-buttons').style.display = 'none';
+            document.getElementById('selection-hint').style.display = 'none';
+        });
+
+        // Helper to convert selection node offset to full text index "1.XXX"
+        function calculateIndex(container, targetNode, offset) {
+            let total = 0;
+            const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+            let node;
+            while (node = walker.nextNode()) {
+                if (node === targetNode) break;
+                total += node.textContent.length;
+            }
+            return "1." + (total + offset);
+        }
+
+        // Tooltip
+        async function showTooltip(e, annots) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.left = e.clientX + 15 + 'px';
+            tooltip.style.top = e.clientY + 15 + 'px';
+
+            let html = '';
+            for (const a of annots) {
+                const res = await fetch(`/api/entity_info?id=${a.id}&type=${a.type}&t=${Date.now()}`);
+                const info = await res.json();
+                html += `
+                    <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1)">
+                        <header>${a.type}</header>
+                        <h4>${info.name}</h4>
+                        <p>${info.details}</p>
+                    </div>
+                `;
+            }
+
+            tooltip.innerHTML = html;
+            tooltip.classList.add('show');
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').classList.remove('show');
+        }
+
+        // Tabs
+        function showTab(name) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+            document.querySelector(`.nav-link[onclick*="${name}"]`).classList.add('active');
+        }
+
+        function setType(type) {
+            selectedType = type;
+            document.querySelectorAll('.radio-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type));
+        }
+
+        // Modals & Entity Selector
+        function openSelector(type) {
+            if (!selection) return;
+            if (type) setType(type);
+            activeSelection = { ...selection }; // Lock it!
+
+            document.getElementById('selector-title').textContent = `Selecciona ${selectedType === 'person' ? 'una Persona' : selectedType === 'location' ? 'un Lloc' : 'un Concepte'}`;
+
+            document.getElementById('selector-modal').style.display = 'flex';
+            document.getElementById('selector-search').value = activeSelection.text;
+            searchEntities();
+        }
+
+        function closeModal() {
+            document.getElementById('selector-modal').style.display = 'none';
+        }
+
+        async function searchEntities() {
+            const q = document.getElementById('selector-search').value;
+            const labelText = q || (activeSelection ? activeSelection.text : '');
+            const results = document.getElementById('entity-results');
+            results.innerHTML = '<div style="padding:10px; color: var(--text-muted); font-size:0.85rem;">Carregant...</div>';
+
+            try {
+                // Always fetch ALL entities for this type
+                const resAll = await fetch(`/api/search_entities?type=${selectedType}&q=&t=${Date.now()}`);
+                const allData = await resAll.json();
+
+                // Also fetch filtered matches if there's a query
+                let matchIds = new Set();
+                if (q) {
+                    const resQ = await fetch(`/api/search_entities?type=${selectedType}&q=${encodeURIComponent(q)}&t=${Date.now()}`);
+                    const matchData = await resQ.json();
+                    matchIds = new Set(matchData.map(e => e.id));
+                }
+
+                let html = `
+                    <div class="list-item" style="border-bottom: 2px solid var(--border); font-weight: bold; color: var(--primary);" 
+                         onclick="openNewEntity()">
+                        ✨ Crear nova: "${labelText}"
+                    </div>
+                `;
+
+                if (allData.length === 0) {
+                    html += '<div style="padding:10px; color: var(--text-muted); font-size:0.85rem; text-align:center;">Cap entitat creada encara</div>';
+                } else {
+                    // Show matches first (highlighted), then the rest
+                    const matches = allData.filter(e => matchIds.has(e.id));
+                    const others = allData.filter(e => !matchIds.has(e.id));
+
+                    if (matches.length > 0) {
+                        html += '<div style="padding: 4px 12px; font-size:0.7rem; color: var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">Coincidències</div>';
+                        html += matches.map(e => `
+                            <div class="list-item" style="font-weight:600;" onclick="saveAnnotation(${e.id})">${e.name}</div>
+                        `).join('');
+                    }
+
+                    if (others.length > 0) {
+                        html += `<div style="padding: 4px 12px; font-size:0.7rem; color: var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">${matches.length > 0 ? 'Altres' : 'Totes les entitats'}</div>`;
+                        html += others.map(e => `
+                            <div class="list-item" onclick="saveAnnotation(${e.id})">${e.name}</div>
+                        `).join('');
+                    }
+                }
+
+                results.innerHTML = html;
+            } catch (err) {
+                results.innerHTML = '<div style="padding:10px; color:red; font-size:0.85rem;">Error carregant entitats</div>';
+            }
+        }
+
+        async function saveAnnotation(eid) {
+            if (!currentDoc) {
+                alert("Error: No hi ha cap document carregat.");
+                return;
+            }
+            if (!activeSelection) {
+                alert("Error: S'ha perdut la selecció del text.");
+                return;
+            }
+            await fetch('/api/annotate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    doc_id: currentDoc.id,
+                    entity_id: eid,
+                    type: selectedType,
+                    begin: activeSelection.begin,
+                    end: activeSelection.end
+                })
+            });
+            activeSelection = null;
+            closeModal();
+            loadDoc(currentDoc.id);
+            loadStats();
+        }
+
+        let isUpdatingPos = false;
+        function startUpdatingPosition() {
+            if (!selectedAnnotationId) return;
+            isUpdatingPos = true;
+            document.getElementById('update-hint-popup').style.display = 'flex';
+        }
+
+        function stopUpdatingPosition() {
+            isUpdatingPos = false;
+            document.getElementById('update-hint-popup').style.display = 'none';
+        }
+
+        async function confirmUpdatePosition() {
+            if (!selectedAnnotationId || !selection) return;
+
+            await fetch('/api/update_annotation_position', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: selectedAnnotationId,
+                    begin: selection.begin,
+                    end: selection.end
+                })
+            });
+
+            stopUpdatingPosition();
+            selection = null;
+            clearSelection();
+            loadDoc(currentDoc.id);
+        }
+
+        async function updateAnnotationPosition() {
+            // Deprecated - replaced by confirmUpdatePosition triggered by mouseup
+            startUpdatingPosition();
+        }
+
+        function clearSelection() {
+            selectedAnnotationId = null;
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
+            document.getElementById('btn-delete').style.display = 'none';
+            document.getElementById('btn-update-pos').style.display = 'none';
+            document.getElementById('btn-edit-entity').style.display = 'none';
+            document.getElementById('btn-export').style.display = 'none';
+        }
+
+        let selectedAnnotationId = null;
+        let editingEntityId = null;
+
+        function selectAnnotation(a) {
+            selectedAnnotationId = a.id;
+            // Clear all highlights
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
+            // Highlight ALL spans that belong to this annotation
+            document.querySelectorAll(`.tag[data-id="${a.id}"]`).forEach(t => t.classList.add('selected'));
+
+            document.getElementById('btn-delete').style.display = 'block';
+            document.getElementById('btn-update-pos').style.display = 'block';
+            document.getElementById('btn-edit-entity').style.display = 'block';
+            document.getElementById('btn-export').style.display = 'block';
+        }
+
+        async function deleteAnnotation() {
+            if (!selectedAnnotationId) return;
+            if (!confirm('Segur que vols eliminar aquesta anotació?')) return;
+
+            await fetch('/api/delete_annotation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: selectedAnnotationId, doc_id: currentDoc.id })
+            });
+
+            selectedAnnotationId = null;
+            document.getElementById('btn-delete').style.display = 'none';
+            loadDoc(currentDoc.id);
+            loadStats();
+        }
+
+        function openNewEntity() {
+            if (!activeSelection) return;
+            closeModal();
+            editingEntityId = null;
+            document.getElementById('new-entity-modal').style.display = 'flex';
+            document.getElementById('new-entity-title').textContent = "Nova Entitat";
+            document.getElementById('new-entity-name').value = activeSelection.text;
+
+            const extra = document.getElementById('entity-extra-fields');
+            extra.innerHTML = '';
+
+            if (selectedType === 'person') {
+                extra.innerHTML = `
+                    <div class="field-group">
+                        <label>Informació</label>
+                        <textarea id="new-entity-info" rows="3"></textarea>
+                    </div>
+                `;
+            } else if (selectedType === 'location') {
+                extra.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+                        <span style="font-size: 0.8rem; color: var(--text-muted)">Intel·ligència geogràfica:</span>
+                        <button class="btn-primary" onclick="searchGeonames()" style="padding: 4px 10px; font-size: 0.75rem; background: var(--accent-loc-text); color: white; border: none; cursor:pointer;">🌍 Autocompletar Coordenades</button>
+                    </div>
+                    <div class="field-group">
+                        <label>País</label>
+                        <input type="text" id="new-entity-country">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="field-group"><label>Lat</label><input type="number" step="any" id="new-entity-lat"></div>
+                        <div class="field-group"><label>Lon</label><input type="number" step="any" id="new-entity-lon"></div>
+                    </div>
+                    <div id="map-preview" style="margin-top: 15px; border-radius: 8px; overflow: hidden;"></div>
+                `;
+            } else if (selectedType === 'keyword') {
+                extra.innerHTML = `
+                    <div class="field-group">
+                        <label>Descripció</label>
+                        <textarea id="new-entity-desc" rows="3"></textarea>
+                    </div>
+                `;
+            }
+        }
+
+        async function editEntity() {
+            if (!selectedAnnotationId) return;
+            const annot = currentDoc.annotations.find(a => a.id === selectedAnnotationId);
+            if (!annot) return;
+
+            const res = await fetch(`/api/entity_raw?id=${annot.id}&type=${annot.type}&t=${Date.now()}`);
+            const data = await res.json();
+            if (!data.id) {
+                alert("No s'ha pogut recuperar la informació de l'entitat.");
+                return;
+            }
+
+            closeModal();
+            selectedType = annot.type;
+            editingEntityId = data.id;
+
+            document.getElementById('new-entity-modal').style.display = 'flex';
+            document.getElementById('new-entity-title').textContent = "Editar Entitat";
+            document.getElementById('new-entity-name').value = data.name || '';
+
+            const extra = document.getElementById('entity-extra-fields');
+            extra.innerHTML = '';
+
+            if (selectedType === 'person') {
+                extra.innerHTML = `
+                    <div class="field-group">
+                        <label>Informació</label>
+                        <textarea id="new-entity-info" rows="3">${data.info || ''}</textarea>
+                    </div>
+                `;
+            } else if (selectedType === 'location') {
+                extra.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+                        <span style="font-size: 0.8rem; color: var(--text-muted)">Intel·ligència geogràfica:</span>
+                        <button class="btn-primary" onclick="searchGeonames()" style="padding: 4px 10px; font-size: 0.75rem; background: var(--accent-loc-text); color: white; border: none; cursor:pointer;">🌍 Autocompletar Coordenades</button>
+                    </div>
+                    <div class="field-group">
+                        <label>País</label>
+                        <input type="text" id="new-entity-country" value="${data.country || ''}">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="field-group"><label>Lat</label><input type="number" step="any" id="new-entity-lat" value="${data.lat || ''}"></div>
+                        <div class="field-group"><label>Lon</label><input type="number" step="any" id="new-entity-lon" value="${data.lon || ''}"></div>
+                    </div>
+                    <div id="map-preview" style="margin-top: 15px; border-radius: 8px; overflow: hidden;"></div>
+                `;
+                // If coordinates exist, trigger map preview
+                if (data.lat && data.lon) {
+                    setTimeout(() => {
+                        const mapContainer = document.getElementById('map-preview');
+                        const bbox_span = 0.05;
+                        const lat = parseFloat(data.lat);
+                        const lon = parseFloat(data.lon);
+                        mapContainer.innerHTML = `
+                            <iframe width="100%" height="200" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
+                            style="border: 1px solid var(--border);"
+                            src="https://www.openstreetmap.org/export/embed.html?bbox=${lon - bbox_span},${lat - bbox_span},${lon + bbox_span},${lat + bbox_span}&layer=mapnik&marker=${lat},${lon}"></iframe>
+                        `;
+                    }, 100);
+                }
+            } else if (selectedType === 'keyword') {
+                extra.innerHTML = `
+                    <div class="field-group">
+                        <label>Descripció</label>
+                        <textarea id="new-entity-desc" rows="3">${data.description || ''}</textarea>
+                    </div>
+                `;
+            }
+        }
+
+        async function searchGeonames() {
+            const name = document.getElementById('new-entity-name').value;
+            if (!name) return alert("Si us plau, introdueix un nom de lloc primer.");
+
+            try {
+                // Utilizem l'API lliure de Nominatim (OpenStreetMap) que equival a GeoNames sense requerir clau d'autorització
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(name)}&format=json&limit=1`);
+                const data = await res.json();
+
+                if (data && data.length > 0) {
+                    const place = data[0];
+                    document.getElementById('new-entity-lat').value = place.lat;
+                    document.getElementById('new-entity-lon').value = place.lon;
+
+                    const countryParts = place.display_name.split(',');
+                    if (countryParts.length > 0) {
+                        document.getElementById('new-entity-country').value = countryParts[countryParts.length - 1].trim();
+                    }
+
+                    const mapContainer = document.getElementById('map-preview');
+                    if (mapContainer) {
+                        const bbox_span = 0.05;
+                        const lat = parseFloat(place.lat);
+                        const lon = parseFloat(place.lon);
+                        mapContainer.innerHTML = `
+                            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px;">Més precís: ${place.display_name}</div>
+                            <iframe width="100%" height="200" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
+                            style="border: 1px solid var(--border);"
+                            src="https://www.openstreetmap.org/export/embed.html?bbox=${lon - bbox_span},${lat - bbox_span},${lon + bbox_span},${lat + bbox_span}&layer=mapnik&marker=${lat},${lon}"></iframe>
+                        `;
+                    }
+                } else {
+                    alert("No s'han trobat coordenades mundials per aquest topònim.");
+                }
+            } catch (e) {
+                alert("Error de connexió al cercador geogràfic.");
+            }
+        }
+
+        let isSavingEntity = false;
+        async function saveNewEntity() {
+            if (isSavingEntity) return;
+            const name = document.getElementById('new-entity-name').value;
+            if (!name) return alert("Cal introduir un nom.");
+
+            isSavingEntity = true;
+            document.querySelector('#new-entity-modal button.btn-primary').disabled = true;
+
+            let data = { name: name };
+            try {
+                if (selectedType === 'person') {
+                    data.info = document.getElementById('new-entity-info').value;
+                } else if (selectedType === 'location') {
+                    data.country = document.getElementById('new-entity-country').value;
+                    data.latitude = document.getElementById('new-entity-lat').value;
+                    data.longitude = document.getElementById('new-entity-lon').value;
+                } else if (selectedType === 'keyword') {
+                    data.definition = document.getElementById('new-entity-desc').value;
+                }
+
+                const res = await fetch('/api/save_entity', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: selectedType, data: data, id: editingEntityId })
+                });
+                const result = await res.json();
+
+                if (editingEntityId) {
+                    // Editing flow finishes immediately since annotation already points to it
+                    document.getElementById('new-entity-modal').style.display = 'none';
+                    document.querySelector('#new-entity-modal button.btn-primary').disabled = false;
+                    isSavingEntity = false;
+                    editingEntityId = null;
+                    await loadDoc(currentDoc.id); // Refresh active view 
+                    loadStats();
+                    return;
+                }
+
+                if (result.status === 'ok') {
+                    document.getElementById('new-entity-modal').style.display = 'none';
+                    if (activeSelection) {
+                        console.log("Creating annotation for new entity:", result.id, activeSelection);
+                        await saveAnnotation(result.id);
+                    } else {
+                        alert("Entitat creada correctament.");
+                        loadStats();
+                    }
+                } else {
+                    alert("Error en guardar l'entitat: " + (result.error || "Error desconegut"));
+                }
+            } catch (e) {
+                console.error("Error al crear entitat:", e);
+                alert("Error tècnic en guardar: " + e.message);
+            } finally {
+                isSavingEntity = false;
+                document.querySelector('#new-entity-modal button.btn-primary').disabled = false;
+                editingEntityId = null;
+            }
+        }
+
+        function exportMD() {
+            if (!currentDoc) return;
+            const rawText = currentDoc.text || '';
+            const md = rawText.replace(/<n\d+>/g, '[[').replace(/<\/n\d+>/g, ']]');
+
+            const blob = new Blob([md], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentDoc.title || 'document'}.md`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Add Source logic
+        function renderSeriesSelect() {
+            const sel = document.getElementById('src-work');
+            if (sel) sel.innerHTML = works.map(w => `<option value="${w.id}">${w.title}</option>`).join('');
+        }
+
+        async function saveDoc() {
+            const docId = document.getElementById('src-id').value;
+            const targetWorkId = document.getElementById('src-work').value;
+            const body = {
+                id: docId || null,
+                is_marked: !!docId,
+                title: document.getElementById('src-title').value,
+                work_id: targetWorkId,
+                date: document.getElementById('src-date').value,
+                ref: document.getElementById('src-ref').value,
+                text: document.getElementById('src-text').value
+            };
+            const res = await fetch('/api/save_doc', { method: 'POST', body: JSON.stringify(body) });
+            const result = await res.json();
+
+            // alert(docId ? 'Document actualitzat!' : 'Document creat!');
+
+            cancelEdit();
+            await init();
+            loadStats();
+            await selectWork(parseInt(targetWorkId));
+
+            if (result.id) {
+                await loadDoc(result.id);
+            }
+            showTab('annotate');
+        }
+
+        let isInlineEditing = false;
+        function editDoc() {
+            if (!currentDoc) return;
+            isInlineEditing = true;
+            const area = document.getElementById('text-area');
+            area.contentEditable = "true";
+            area.focus();
+
+            document.getElementById('edit-buttons').style.display = 'flex';
+            document.getElementById('normal-buttons').style.display = 'none';
+            document.getElementById('edit-cell').style.display = 'none';
+        }
+
+        async function saveInlineEdit() {
+            const area = document.getElementById('text-area');
+
+            // Recursively serialize DOM to <n{aid}>text</n{aid}> format
+            function serializeNode(node) {
+                let result = '';
+                for (const child of node.childNodes) {
+                    if (child.nodeType === Node.TEXT_NODE) {
+                        result += child.textContent;
+                    } else if (child.nodeName === 'SPAN' && child.classList.contains('tag')) {
+                        const aid = child.dataset.id;
+                        result += `<n${aid}>${serializeNode(child)}</n${aid}>`;
+                    } else if (child.nodeName === 'BR') {
+                        result += '\n';
+                    } else if (child.nodeName === 'DIV' || child.nodeName === 'P') {
+                        result += '\n' + serializeNode(child);
+                    } else {
+                        result += serializeNode(child);
+                    }
+                }
+                return result;
+            }
+
+            const taggedText = serializeNode(area);
+
+            const body = {
+                id: currentDoc.id,
+                title: currentDoc.title,
+                date: currentDoc.date,
+                ref: currentDoc.ref,
+                text: taggedText
+            };
+
+            const res = await fetch('/api/save_doc', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const result = await res.json();
+            if (result.status === 'ok') {
+                cancelInlineEdit();
+                loadStats();
+            } else {
+                alert("Error al guardar: " + (result.error || "Desconegut"));
+            }
+        }
+
+        function cancelInlineEdit() {
+            isInlineEditing = false;
+            const area = document.getElementById('text-area');
+            area.contentEditable = "false";
+            document.getElementById('edit-buttons').style.display = 'none';
+            document.getElementById('normal-buttons').style.display = 'flex';
+            document.getElementById('edit-cell').style.display = 'flex';
+            loadDoc(currentDoc.id);
+        }
+
+        function cancelEdit() {
+            document.getElementById('src-id').value = '';
+            document.getElementById('src-title').value = '';
+            document.getElementById('src-date').value = '';
+            document.getElementById('src-ref').value = '';
+            document.getElementById('src-text').value = '';
+            document.getElementById('btn-save-doc').textContent = 'Crear Document';
+            document.getElementById('btn-cancel-edit').style.display = 'none';
+        }
+
+        function editDocParams() {
+            if (!currentDoc) return;
+            document.getElementById('param-title').value = currentDoc.title || '';
+            document.getElementById('param-date').value = currentDoc.date || '';
+            document.getElementById('param-ref').value = currentDoc.ref || '';
+
+            const sel = document.getElementById('param-work');
+            sel.innerHTML = works.map(w => `<option value="${w.id}">${w.title}</option>`).join('');
+            // Use parent_id or doc specific parsing for series if needed. In Histena, docs map to work_id via their parent or directly.
+            // Often we can just get it from the UI or currentDoc.
+            sel.value = currentDoc.work_id || currentDoc.id_work || works[0].id; // Fallback
+
+            document.getElementById('params-modal').style.display = 'flex';
+        }
+
+        function closeParamsModal() {
+            document.getElementById('params-modal').style.display = 'none';
+        }
+
+        async function saveDocParams() {
+            if (!currentDoc) return;
+            const body = {
+                id: currentDoc.id,
+                title: document.getElementById('param-title').value,
+                work_id: document.getElementById('param-work').value,
+                date: document.getElementById('param-date').value,
+                ref: document.getElementById('param-ref').value,
+                text: currentDoc.raw_text || currentDoc.text // Transmit safe, strictly plain text layer without destructive re-marking
+            };
+
+            const res = await fetch('/api/save_doc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            const result = await res.json();
+            if (result.status === 'ok' || result.id) {
+                closeParamsModal();
+                await init();
+                loadStats();
+                await selectWork(parseInt(body.work_id));
+                await loadDoc(currentDoc.id);
+            } else {
+                alert("Error actualitzant paràmetres.");
+            }
+        }
+
+        async function deleteDocument() {
+            if (!currentDoc) return;
+            if (!confirm(`Estàs segur d'eliminar definitivament el document "${currentDoc.title}" i totes les seves anotacions?\nAquesta acció esborrarà completament i no es podrà desfer.`)) return;
+
+            const body = { doc_id: currentDoc.id };
+            const res = await fetch('/api/delete_doc', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            const result = await res.json();
+
+            if (result.status === 'ok') {
+                const wid = currentDoc.work_id || currentDoc.id_work;
+                await init();
+                loadStats();
+                if (wid) await selectWork(parseInt(wid));
+                document.getElementById('text-area').innerHTML = 'Selecciona un document a la barra lateral...';
+                document.getElementById('annotate-buttons').style.display = 'none';
+                document.getElementById('edit-cell').style.display = 'none';
+                document.getElementById('btn-export').style.display = 'none';
+                document.getElementById('meta-title').textContent = '-';
+                document.getElementById('meta-date').textContent = '-';
+                document.getElementById('meta-ref').textContent = '-';
+                currentDoc = null;
+            } else {
+                alert("Error eliminant el document.");
+            }
+        }
+
+        async function loadStats() {
+            const res = await fetch('/api/stats?t=' + Date.now());
+            const data = await res.json();
+            const container = document.getElementById('dashboard-stats');
+            const icons = { docs: '📄', persons: '👤', locations: '📍', keywords: '🔑', annots: '🏷️' };
+            const labels = { docs: 'Documents', persons: 'Persones', locations: 'Llocs', keywords: 'Conceptes', annots: 'Anotacions' };
+
+            container.innerHTML = Object.entries(data).map(([k, v]) => {
+                if (k.startsWith('annots_')) return ''; // Skip subcounts in main loop
+                let subtext = '';
+                if (k === 'annots') {
+                    subtext = `<div style="font-size:0.7rem; margin-top:5px; opacity:0.8;">P: ${data.annots_person} | L: ${data.annots_location} | C: ${data.annots_keyword}</div>`;
+                }
+                return `
+                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: var(--shadow); text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">${icons[k]}</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">${v}</div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">${labels[k]}</div>
+                        ${subtext}
+                    </div>
+                `;
+            }).join('');
+        }
+        async function loadProjects() {
+            const res = await fetch('/api/projects?t=' + Date.now());
+            const data = await res.json();
+            const list = document.getElementById('projects-list');
+            if (list) {
+                list.innerHTML = data.projects.map(p => `
+                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: var(--shadow); cursor: pointer; border: 2px solid ${data.current === p ? 'var(--primary)' : 'transparent'}; transition: all 0.2s;" 
+                         onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';"
+                         onclick="switchProject('${p}')">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📦</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">${p}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">${data.current === p ? 'Projecte Actiu <span style="color:var(--primary)">●</span>' : 'Base de dades SQLite'}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function switchProject(name) {
+            const res = await fetch('/api/switch_project', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+            const result = await res.json();
+            if (result.status === 'ok') location.reload();
+        }
+
+        async function createNewProject() {
+            const name = document.getElementById('new-project-name').value;
+            if (!name) return alert("Escriu el nom del nou projecte");
+            const res = await fetch('/api/new_project', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+            const result = await res.json();
+            if (result.status === 'ok') {
+                location.reload();
+            } else {
+                alert("Error al crear el projecte: " + (result.error || "Desconegut"));
+            }
+        }
+
+        async function saveNewWork() {
+            const title = document.getElementById('new-work-title').value;
+            const abbrev = document.getElementById('new-work-abbrev').value;
+            const desc = document.getElementById('new-work-desc').value;
+            if (!title) return alert("El títol és obligatori");
+
+            const res = await fetch('/api/new_work', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, abbrev, description: desc })
+            });
+
+            const result = await res.json();
+            if (result.status === 'ok') {
+                document.getElementById('new-work-form').style.display = 'none';
+                document.getElementById('new-work-title').value = '';
+                document.getElementById('new-work-abbrev').value = '';
+                document.getElementById('new-work-desc').value = '';
+
+                const wRes = await fetch('/api/works?t=' + Date.now());
+                works = await wRes.json();
+                renderSeriesSelect();
+                document.getElementById('src-work').value = result.id;
+            } else {
+                alert("Error: " + result.error);
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
